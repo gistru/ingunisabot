@@ -2,7 +2,7 @@
 [Bot Telegram](https://telegram.me/ingunisabot) per gli studenti iscritti alla facoltà di Ingegneria dell'Università di Salerno 
 
 ## Librerie utilizzate
-- Simple HTML DOM
+- [PHP Simple HTML DOM Parser](https://simplehtmldom.sourceforge.io)
 
 ## Funzioni
 - Controllare le attività didattiche
