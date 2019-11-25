@@ -57,7 +57,7 @@ $materia = '[{"text":"Insegnamenti%20Unisa","url":"https://kutt.it/insegnamentiu
 $orariopdf = '[{"text":"Insegnamenti%20Unisa","url":"https://kutt.it/insegnamentiunisa"}],[{"text":"Orario%20in%20PDF","callback_data":"orariopdf"}]';
 $eliminafeeback = '[{"text":"Elimina%20feeback","callback_data":"deletefeed"}]';
 $exit ='[{"text":"","callback_data":""}]';
-$condizioni = '[{"text":"Termini%20e%20Condizioni","url":"https://github.com/gistru/ingunisabot/blob/master/terms.md"}]';
+$condizioni = '[{"text":"Termini%20e%20Condizioni","url":"https://github.com/gistru/ing-unisa-bot/blob/master/terms.md"}]';
 /* ----------------------
 Query Data
 ---------------------- */
@@ -736,4 +736,5 @@ sendMessage($chatID,"true","Ops, Qualcosa è andato storto\nRiparti con /start")
 };
 break;
 };
-?>
+?>
+
