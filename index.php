@@ -436,7 +436,7 @@ $Row = mysql_fetch_assoc($search);
 $id = $Row["ChatID"];
 $state = $Row["State"];
 if(isset($id)){
-mysql_query("UPDATE `Utenti` SET `State`='aululario',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+mysql_query("UPDATE `Utenti` SET `State`='aulario',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
 sendMessage($chatID,"true","<b>Ok ora puoi cercare la tua aula</b>");
 }else{
 mysql_query("INSERT INTO `Utenti`(`ChatID`, `Name`, `Username`, `State`, `Corso`, `Anno`, `Cartella`, `Materia`, `Log`) VALUES ('$chatID','$name','$username','aululario',NULL,NULL,'','','il $date alle $time')");
