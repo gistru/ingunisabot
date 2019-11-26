@@ -165,7 +165,7 @@ Switch
 switch ($text){
 //start
 case '/start':
-sendMessage($chatID,"true","Ciao <b>$name!</b>\nBenvenuto su <b>IngegneriaUnisaBot</b>.\n\nPer iniziare subito a cercare gli orari dei corsi e le cartelle condivise ho bisogno che imposti un tuo profilo, ma se non sei interessato puoi tranquillamente saltare questo step. Se dovessi cambiare idea, puoi configurarlo in un secondo momento.\nDi seguito puoi trovare tutti i comandi del Bot\n\n/start - avvia bot\n/config - configura il tuo profilo\n/profilo - informazioni del tuo profilo\n/cancellaprofilo - cancella il tuo profilo\n/iniziocorsi - controlla attività didattiche\n/orari - cerca gli orari delle lezioni\n/esami - trova le date dei prossimi appelli\n/studentingegneria - cerca su StudentIngegneria\n/r0x - cerca su r0x\n/aulelibere - aule libere oggi\n/aululario - trova la posizione di un'aula\n/cartellecondivise - cerco cartelle condivise\n/cercadocente - ricerca dei docenti\n/biblioteca - cerca nel catalogo di ateneo\n/trovacompagno - cerca un compagno di studio\n/mensa - menu del giorno\n/membri - quanti utenti attivi ci sono\n/webcam - webcam unisa\n/feedback - inviami un feedback\n/annulla - interrompe l'operazione corrente\n/info - informazioni sul bot\n\n<b>Seleziona una funzione per iniziare</b>");
+sendMessage($chatID,"true","Ciao <b>$name!</b>\nBenvenuto su <b>IngegneriaUnisaBot</b>.\n\nPer iniziare subito a cercare gli orari dei corsi e le cartelle condivise ho bisogno che imposti un tuo profilo, ma se non sei interessato puoi tranquillamente saltare questo step. Se dovessi cambiare idea, puoi configurarlo in un secondo momento.\nDi seguito puoi trovare tutti i comandi del Bot\n\n/start - avvia bot\n/config - configura il tuo profilo\n/profilo - informazioni del tuo profilo\n/cancellaprofilo - cancella il tuo profilo\n/iniziocorsi - controlla attività didattiche\n/orari - cerca gli orari delle lezioni\n/esami - trova le date dei prossimi appelli\n/studentingegneria - cerca su StudentIngegneria\n/r0x - cerca su r0x\n/aulelibere - aule libere oggi\n/aulario - trova la posizione di un'aula\n/cartellecondivise - cerco cartelle condivise\n/cercadocente - ricerca dei docenti\n/biblioteca - cerca nel catalogo di ateneo\n/trovacompagno - cerca un compagno di studio\n/mensa - menu del giorno\n/membri - quanti utenti attivi ci sono\n/webcam - webcam unisa\n/feedback - inviami un feedback\n/annulla - interrompe l'operazione corrente\n/info - informazioni sul bot\n\n<b>Seleziona una funzione per iniziare</b>");
 mysql_query("INSERT INTO `Utenti`(`ChatID`, `Name`, `Username`, `State`, `Corso`, `Anno`, `Cartella`, `Materia`, `Log`) VALUES ('$chatID','$name','$username','0',NULL,NULL,'','','il $date alle $time')");
 break;
 // Modulo Feedback
@@ -429,7 +429,7 @@ mysql_query("UPDATE `Utenti` SET `State`='docente',`Log`='il $date alle $time' W
 sendMessage($chatID,"true","<b>Ok ora puoi cercare un docente</b>");
 break;
 // Trova Aula
-case '/aululario':
+case '/aulario':
 mysql_query("SET NAMES 'utf8'");
 $search=mysql_query("SELECT * FROM `Utenti` WHERE `ChatID` LIKE '$chatID'");
 $Row = mysql_fetch_assoc($search);
@@ -713,7 +713,7 @@ $ricerca[] = $item;
 sendMessage($chatID,"true", str_replace(array('[',']','{','}','"',',','        ','      ','null','()','&nbsp;','\t'), '', json_encode($ricerca, JSON_PRETTY_PRINT | ENT_NOQUOTES | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_LINE_TERMINATORS | JSON_UNESCAPED_UNICODE)));
 unset($ricerca);
 sendMessage($chatID,"true","<b>Ricerca completata!</b>");
-}else if($state=='aululario'){
+}else if($state=='aulario'){
 $search=mysql_query("SELECT * FROM `TrovaAule` WHERE `Aula` LIKE '$text'");
 $Row = mysql_fetch_assoc($search);
 $aula = $Row["Aula"];
