@@ -5,7 +5,6 @@
 - [PHP Simple HTML DOM Parser](https://simplehtmldom.sourceforge.io)
 
 ## Funzioni
-- Controllare le attività didattiche
 - Inviare gli orari delle lezioni
 - Trovare le date dei prossimi appelli
 - Cercare su StudentIngegneria
