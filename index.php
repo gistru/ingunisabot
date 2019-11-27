@@ -138,8 +138,9 @@ $link="Ingegneriacivile_Magistrale_";
 $link="Ingegneriachimica_Magistrale_";
 }else if($corso=="06228"){
 $link="Foodengineering_Magistrale_";
-}else if($corso=="DH"){
+}else if($corso=="06229"){
 $link="Digitalhealthandbioinformaticengineering_Magistrale_";
+$corso="DH";
 };
 editMessage($queryUserID,$querymsid,"true","<b>Ti ho inviato il file</b>");
 sendDocument($queryUserID,"https://easycourse.unisa.it/EasyCourse/Orario/Facolta_di_Ingegneria/2019-2020/356/Curricula/$link$corso.pdf?$timestamp");
@@ -440,9 +441,9 @@ $anno = $Row["Anno"];
 if(isset($id)){
 if($state=="config"){
 mysql_query("UPDATE `Utenti` SET `State`='config1',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
-sendMessage($chatID,"true","<b>Qual è il tuo corso di studi?</b>\n\nDigital health and bioinformatic engineering - Magistrale [DH]\nFood engineering - Magistrale [06228]\nIngegneria chimica - Magistrale [06222]\nIngegneria civile - Magistrale [06221]\nIngegneria elettronica - Magistrale [06224]\nIngegneria gestionale - Magistrale [06226]\nIngegneria informatica - Magistrale [06227]\nIngegneria meccanica - Magistrale [06223]\nIngegneria per l'ambiente e il territorio - Magistrale [06225]\nIngegneria chimica - triennale [06122]\nIngegneria civile - triennale [06121]\nIngegneria civile per l'ambiente e il territorio - triennale [06125]\nIngegneria elettronica - triennale [06124]\nIngegneria gestionale - triennale [06126]\nIngegneria informatica - triennale [06127]\nIngegneria meccanica - triennale [06123]\nIngegneria edile-architettura - quinquennale [06601]\n\n<i>Inserisci il codice corrispondente posto tra parentesi quadre</i>",$iniziamo,'hide');
+sendMessage($chatID,"true","<b>Qual è il tuo corso di studi?</b>\n\nDigital health and bioinformatic engineering - Magistrale [06229]\nFood engineering - Magistrale [06228]\nIngegneria chimica - Magistrale [06222]\nIngegneria civile - Magistrale [06221]\nIngegneria elettronica - Magistrale [06224]\nIngegneria gestionale - Magistrale [06226]\nIngegneria informatica - Magistrale [06227]\nIngegneria meccanica - Magistrale [06223]\nIngegneria per l'ambiente e il territorio - Magistrale [06225]\nIngegneria chimica - triennale [06122]\nIngegneria civile - triennale [06121]\nIngegneria civile per l'ambiente e il territorio - triennale [06125]\nIngegneria elettronica - triennale [06124]\nIngegneria gestionale - triennale [06126]\nIngegneria informatica - triennale [06127]\nIngegneria meccanica - triennale [06123]\nIngegneria edile-architettura - quinquennale [06601]\n\n<i>Inserisci il codice corrispondente posto tra parentesi quadre</i>",$iniziamo,'hide');
 }else if($state=="config1"){
-if($text=="DH"||$text=="06228"||$text=="06222"||$text=="06221"||$text=="06224"||$text=="06226"||$text=="06227"||$text=="06223"||$text=="06225"||$text=="06122"||$text=="06121"||$text=="06125"||$text=="06124"||$text=="06126"||$text=="06127"||$text=="06123"||$text=="06601"){
+if($text=="06229"||$text=="06228"||$text=="06222"||$text=="06221"||$text=="06224"||$text=="06226"||$text=="06227"||$text=="06223"||$text=="06225"||$text=="06122"||$text=="06121"||$text=="06125"||$text=="06124"||$text=="06126"||$text=="06127"||$text=="06123"||$text=="06601"){
 mysql_query("UPDATE `Utenti` SET `State`='config2',`Corso`='$text',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
 sendMessage($chatID,"true","Che anno frequenti?",$menuanno,'real');
 }else{
