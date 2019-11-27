@@ -257,49 +257,6 @@ sendMessage($chatID,"true","<b>Ok ora puoi cercare le aule libere di oggi</b>",$
 sendMessage($chatID,"true","Non hai bisogno di cercare aule libere oggi");
 }};
 break;
-// Attività didattiche
-mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
-case '/iniziocorsi':
-sendMessage($chatID,"true","
-1° ANNO dei CORSI di LAUREA TRIENNALE e LAUREA a CICLO UNICO\n
-DICIV
-- Ingegneria Civile -> 23 settembre 2019
-- Ingegneria Civile per l'Ambiente e il Territorio -> 23 settembre 2019
-- Ingegneria Edile-Architettura -> ottobre 2019\n
-DIEM
-- Ingegneria Informatica -> 16 settembre 2019\n
-DIIN
-- Ingegneria Chimica -> 9 settembre 2019
-- Ingegneria Elettronica -> 9 settembre 2019
-- Ingegneria Gestionale -> 9 settembre 2019
-- Ingegneria Meccanica -> 9 settembre 2019\n\n
-ANNI SUCCESSIVI AL 1° ANNO dei CORSI di LAUREA TRIENNALE E LAUREA a CICLO UNICO\n
-DICIV
-- Ingegneria Civile -> 23 settembre 2019
-- Ingegneria Civile per l'Ambiente e il Territorio -> 23 settembre 2019
-- Ingegneria per l'Ambiente e il Territorio -> 23 settembre 2019
-- Ingegneria Edile-Architettura -> ottobre 2019\n
-DIEM
-- Ingegneria Informatica -> 16 settembre 2019\n
-DIIN
-- Ingegneria Chimica / Food Engineering -> 16 settembre 2019
-- Ingegneria Elettronica -> 16 settembre 2019
-- Ingegneria Gestionale -> 16 settembre 2019
-- Ingegneria Meccanica -> 16 settembre 2019\n\n
-CORSI di LAUREA MAGISTRALE\n
-DICIV
-- Ingegneria Civile -> 23 settembre 2019
-- Ingegneria Civile per l'Ambiente e il Territorio -> 23 settembre 2019
-- Ingegneria per l'Ambiente e il Territorio -> 23 settembre 2019\n
-DIEM
-- Ingegneria Informatica -> 16 settembre 2019\n
-DIIN
-- Ingegneria Chimica / Food Engineering -> 23 settembre 2019
-- Ingegneria Elettronica -> 23 settembre 2019
-- Ingegneria Gestionale -> 23 settembre 2019
-- Ingegneria Meccanica -> 23 settembre 2019
-");
-break;
 // Orari
 case '/orari':
 mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
