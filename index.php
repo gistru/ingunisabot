@@ -106,40 +106,10 @@ if($querydata=="orariopdf"){
 $search=mysql_query("SELECT * FROM `Utenti` WHERE `ChatID` LIKE '$queryUserID'");
 $Row = mysql_fetch_assoc($search);
 $corso = $Row["Corso"];
-if($corso=="06121"){
-$link="Ingegneriacivile_triennale_";
-}else if($corso=="06123"){
-$link="Ingegneriameccanica_triennale_";
-}else if($corso=="06122"){
-$link="Ingegneriachimica_triennale_";
-}else if($corso=="06127"){
-$link="Ingegneriainformatica_triennale_";
-}else if($corso=="06124"){
-$link="Ingegneriaelettronica_triennale_";
-}else if($corso=="06126"){
-$link="Ingegneriagestionale_triennale_";
-}else if($corso=="06125"){
-$link="Ingegneriacivileperlambienteeilterritorio_triennale_";
-}else if($corso=="06601"){
-$link="Ingegneriaedile-architettura_quinquennale_";
-}else if($corso=="06225"){
-$link="Ingegneriaperlambienteeilterritorio_Magistrale_";
-}else if($corso=="06223"){
-$link="Ingegneriameccanica_Magistrale_";
-}else if($corso=="06227"){
-$link="Ingegneriainformatica_Magistrale_";
-}else if($corso=="06226"){
-$link="Ingegneriagestionale_Magistrale_";
-}else if($corso=="06224"){
-$link="Ingegneriaelettronica_Magistrale_";
-}else if($corso=="06221"){
-$link="Ingegneriacivile_Magistrale_";
-}else if($corso=="06222"){
-$link="Ingegneriachimica_Magistrale_";
-}else if($corso=="06228"){
-$link="Foodengineering_Magistrale_";
-}else if($corso=="06229"){
-$link="Digitalhealthandbioinformaticengineering_Magistrale_";
+$search=mysql_query("SELECT * FROM `Corsi` WHERE `Corso` LIKE '$corso'");
+$Row = mysql_fetch_assoc($search);
+$link = $Row["Link"];
+if($corso=="06229"){
 $corso="DH";
 };
 editMessage($queryUserID,$querymsid,"true","<b>Ti ho inviato il file</b>");
@@ -609,7 +579,7 @@ curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
 $response = curl_exec($handle);
 $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
 if($httpCode == 404) {
-sendMessage($chatID,"true","Non hai inserito un link valido");
+sendMessage($chatID,"true","Non hai inserito un token valido");
 curl_close($handle);
 }else{
 mysql_query("UPDATE `Utenti` SET `State`='config4',`Cartella`='$url',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
