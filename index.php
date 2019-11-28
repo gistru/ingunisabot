@@ -51,13 +51,15 @@ $iniziamo ='[{"text":"Iniziamo","callback_data":"start"}]';
 $menuanno = '[{"text":"1","callback_data":"1"}],[{"text":"2","callback_data":"2"}],[{"text":"3","callback_data":"3"}],[{"text":"4","callback_data":"4"}],[{"text":"5","callback_data":"5"}]';
 $menuannoprofilo = '[{"text":"1","callback_data":"1"}],[{"text":"2","callback_data":"2"}],[{"text":"3","callback_data":"3"}],[{"text":"4","callback_data":"4"}],[{"text":"5","callback_data":"5"}],[{"text":"Torna%20indietro","callback_data":"goback"}]';
 $profilo = '[{"text":"Modifica%20Cartella","callback_data":"modfolder"},{"text":"Modifica%20Anno","callback_data":"modanno"}],[{"text":"Modifica%20Materia","callback_data":"modsubject"},{"text":"Cancella%20Profilo","callback_data":"cancprofilo"}]';
+//$settimana = '[{"text":"Lun","callback_data":"lun"},{"text":"Mar","callback_data":"mar"}],[{"text":"Mer","callback_data":"mer"},{"text":"Gio","callback_data":"gio"}],[{"text":"Ven","callback_data":"ven"},{"text":"Esci","callback_data":"exit"}]';
 $menuskip = '[{"text":"Salta%20questo%20passaggio","callback_data":"skip"}]';
 $menuesami = '[{"text":"Esami%20Unisa","url":"https://kutt.it/esamiunisa"}]';
 $materia = '[{"text":"Insegnamenti%20Unisa","url":"https://kutt.it/insegnamentiunisa"}]';
-$orariopdf = '[{"text":"Insegnamenti%20Unisa","url":"https://kutt.it/insegnamentiunisa"}],[{"text":"Orario%20in%20PDF","callback_data":"orariopdf"}]';
+$orariopdf = '[{"text":"Agenda%20Unisa","url":"https://corsi.unisa.it/didattica/orari"},{"text":"Insegnamenti%20Unisa","url":"https://kutt.it/insegnamentiunisa"}],[{"text":"Orario%20in%20PDF","callback_data":"orariopdf"}]';
 $eliminafeeback = '[{"text":"Elimina%20feeback","callback_data":"deletefeed"}]';
 $exit ='[{"text":"","callback_data":""}]';
 $condizioni = '[{"text":"Termini%20e%20Condizioni","url":"https://github.com/gistru/ing-unisa-bot/blob/master/terms.md"}]';
+$menuwebcam = '[{"text":"Piazza%20del%20Rettorato","callback_data":"webcamrettorato"}],[{"text":"Piazza%20del%20Sapere","callback_data":"webcamsapere"}],[{"text":"Veduta%20verso%20Ovest","callback_data":"webcamovest"}]';
 /* ----------------------
 Query Data
 ---------------------- */
@@ -128,6 +130,26 @@ break;
 if($querydata=="cancprofilo"){
 mysql_query("DELETE FROM `Utenti` WHERE `ChatID`='$queryUserID'");
 editMessage($queryUserID,$querymsid,"true","<b>Profilo cancellato!</b>");
+break;
+};
+// Webcam Veduta verso Ovest
+if($querydata=="webcamovest"){
+editMessage($queryUserID,$querymsid,"true","<b>Ti invio l'ultima immagine da Veduta verso Ovest</b>");
+sendPhoto($queryUserID,"https://web.unisa.it/uploads/stazionemeteo/webcam/stecca9.jpg?$timestamp");
+break;
+};
+
+// Webcam Piazza Rettorato
+if($querydata=="webcamrettorato"){
+editMessage($queryUserID,$querymsid,"true","<b>Ti invio l'ultima immagine da Piazza del Rettorato</b>");
+sendPhoto($queryUserID,"http://www.campanialive.it/webcam/unisa/piazzacampus.jpg?$timestamp");
+break;
+};
+
+// Webcam Piazza del Sapere
+if($querydata=="webcamsapere"){
+editMessage($queryUserID,$querymsid,"true","<b>Ti invio l'ultima immagine da Piazza del Sapere</b>");
+sendPhoto($queryUserID,"https://web.unisa.it/uploads/stazionemeteo/webcam/piazzaDelSapere.jpg?$timestamp");
 break;
 };
 /* ----------------------
@@ -239,7 +261,7 @@ if(isset($id)){
 if(isset($corso)){
 $url="https://corsi.unisa.it/$corso/didattica/orari";
 mysql_query("UPDATE `Utenti` SET `State`='orari',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
-sendMessage($chatID,"true","<b>Ok quale insegnamento vuoi cercare?</b>\n\n<i>Clicca qui per l'agenda completa del tuo corso di studi:</i> $url\n\n<i>Vuoi l'orario del tuo corso di studi in pdf?\nClicca sul bottone qui sotto</i>",$orariopdf,'inline');
+sendMessage($chatID,"true","<b>Ok quale insegnamento vuoi cercare?</b>\n\n<i>Vuoi l'orario del tuo corso di studi in pdf?\nClicca sul bottone qui sotto</i>",$orariopdf,'inline');
 }else{
 sendMessage($chatID,"true","Non hai ancora impostato il tuo profilo o è incompleto");
 }}else{
@@ -389,9 +411,7 @@ break;
 // Webcam
 case '/webcam':
 mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
-sendMessage($chatID,"true","<b>Ok ti sto per inviare le immagini delle webcam</b>");
-sendPhoto($chatID,"https://web.unisa.it/uploads/stazionemeteo/webcam/stecca9.jpg?$timestamp");
-sendPhoto($chatID,"http://www.campanialive.it/webcam/unisa/piazzacampus.jpg?$timestamp");
+sendMessage($chatID,"true","<b>Quale webcam vuoi visionare?</b>",$menuwebcam,'inline');
 break;
 // Feedback
 case '/feedback':
