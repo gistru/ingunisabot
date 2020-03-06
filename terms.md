@@ -1,8 +1,7 @@
 # Termini e Condizioni
 
 ## Informativa sulla privacy
-IngUnisaBot si impegna a rispettare e proteggere la tua privacy ed è importante quindi che tu sia a conoscenza di quali strumenti vengono adoperati per erogare il servizio. 
-Di seguito è riportata l'informativa per illustrarti quali informazioni vengono raccolte e come queste vengono trattate. Il bot nasce con il solo scopo, qualora sia possibile, di divenire uno strumento utile per lo studente, ed è altresì bene specificare che non vi è alcuna finalità statistica, di profilazione o di lucro.
+IngUnisaBot si impegna a rispettare e proteggere la tua privacy ed è importante che tu sia a conoscenza di quali strumenti vengono adoperati per erogare il servizio. Di seguito è riportata l'informativa per illustrarti quali informazioni vengono raccolte e come queste vengono trattate. Il bot nasce con l'intento di creare degli automatismi utili per lo studente.
 
 ## Quali informazioni vengono raccolte
 Quando utilizzi il bot IngUnisaBot tramite Telegram, vengono raccolte delle informazioni di base sul tuo profilo.
@@ -12,7 +11,6 @@ Quando utilizzi il bot IngUnisaBot tramite Telegram, vengono raccolte delle info
 - Username - il tuo username
 - State - comando richiesto dall'utente
 - Corso - corso di laurea (facoltativo)
-- Anno - anno che si sta frequentando (facoltativo)
 - Cartella - cartella gsuite condivisa (facoltativo)
 - Materia - materia di studio (facoltativo)
 - Log - data e ora di accesso al bot
@@ -33,7 +31,7 @@ Il bot elabora i dati in suo possesso per creare delle associazioni Corso-Materi
 Il menu della mensa viene prelevato sfruttando il servizio [ammensa-unisa](http://ammensa-unisa.appspot.com).
 
 ## Cancellare i propri dati
-Puoi cancellare il tuo profilo in qualsiasi momento. Tramite il comando /cancellaprofilo ogni tua informazione memorizzata sarà cancellata dal database.
+Puoi cancellare il tuo profilo in qualsiasi momento. Accedi alle tue informazioni tramite il comando /profilo e seleziona la voce "Cancella profilo". Ogni informazione collegata al tuo ID sarà cancellata dal database.
 
 ## Consenso
 Se utilizzi il bot IngUnisaBot accetti le condizioni sulla privacy contenute in questa pagina.
