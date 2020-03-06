@@ -9,7 +9,6 @@
 - Trovare le date dei prossimi appelli
 - Cercare su StudentIngegneria
 - Cercare su r0x
-- Individuare le aule libere
 - Condividere cartelle GSuite
 - Cercare un docente
 - Localizzare aule
