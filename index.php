@@ -770,7 +770,7 @@ else if($state == "modfolder"){
     sendMessage($chatID,"true","Non hai inserito un token valido");
     curl_close($handle);
   }else{
-    mysql_query("UPDATE `Utenti` SET `State`='config4',`Cartella`='$url',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+    mysql_query("UPDATE `Utenti` SET `State`='config4',`Cartella`='$nome_cartella, $url',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
     sendMessage($chatID,"true","<b>Perfetto, abbiamo finito!</b>\n\nEcco il tuo /profilo\n\nSe vuoi cancellare il profilo ti basterà utilizzare il comando /cancellaprofilo");
     curl_close($handle);
   }
@@ -909,4 +909,5 @@ break;
 
 
 
-?>
+?>
+
