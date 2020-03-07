@@ -91,9 +91,9 @@ break;
 
 // Skip Folder
 if($querydata == "skip"){
-mysql_query("UPDATE `Utenti` SET `State`='config4',`Cartella`='',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$queryUserID'");
+mysql_query("UPDATE `Utenti` SET `State`='0',`Cartella`='',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$queryUserID'");
 editMessage($queryUserID,$querymsid,"true","<b>Hai saltato questo passaggio</b>");
-sendMessage($queryUserID,$querymsid,"<b>Perfetto, abbiamo finito!</b>\n\nEcco il tuo /profilo\n");
+sendMessage($queryUserID,$querymsid,"<b>Perfetto, abbiamo finito!</b>\n\nEcco il tuo /profilo");
 break;
 };
 
@@ -626,7 +626,7 @@ else if($state == "config2"){
     curl_close($handle);
   }else{
     mysql_query("UPDATE `Utenti` SET `State`='0',`Cartella`='$nome_cartella, $url',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
-    sendMessage($chatID,"true","<b>Perfetto, abbiamo finito!</b>\n\nEcco il tuo /profilo\n");
+    sendMessage($chatID,"true","<b>Perfetto, abbiamo finito!</b>\n\nEcco il tuo /profilo");
     curl_close($handle);
   }
   curl_close($handle);
@@ -771,8 +771,8 @@ else if($state == "modfolder"){
     sendMessage($chatID,"true","Non hai inserito un token valido");
     curl_close($handle);
   }else{
-    mysql_query("UPDATE `Utenti` SET `State`='config4',`Cartella`='$nome_cartella, $url',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
-    sendMessage($chatID,"true","<b>Perfetto, abbiamo finito!</b>\n\nEcco il tuo /profilo\n\nSe vuoi cancellare il profilo ti basterà utilizzare il comando /cancellaprofilo");
+    mysql_query("UPDATE `Utenti` SET `State`='0',`Cartella`='$nome_cartella, $url',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+    sendMessage($chatID,"true","<b>Perfetto, abbiamo finito!</b>\n\nEcco il tuo /profilo");
     curl_close($handle);
   }
   curl_close($handle);
