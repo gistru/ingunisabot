@@ -395,9 +395,10 @@ if(isset($id)){
     $nomemateria = strtoupper($nomemateria);
     $increment = 0;
     foreach($html->find('tr') as $row) {
-      $attività_didattica = $row->find('td',0)->plaintext;
-      $attività_didattica = explode("] ",$attività_didattica);
-      $attività_didattica = $attività_didattica[1];
+      $attivita_didattica = $row->find('td',0)->plaintext;
+      $attivita_didattica = explode("] ",$attivita_didattica);
+      $attivita_didattica = $attivita_didattica[1];
+      $attivita_didattica = html_entity_decode($attivita_didattica);
       $periodo_iscrizioni = $row->find('td',1)->plaintext;
       $data_e_turno = $row->find('td',2)->plaintext;
       $vuoto_1 = $row->find('td',3)->plaintext;
@@ -407,9 +408,9 @@ if(isset($id)){
       }
       $vuoto_2 = $row->find('td',5)->plaintext;
       $iscritti = $row->find('td',6)->plaintext;
-      $val = similar_text($attività_didattica, $nomemateria, $percent);
-      if($percent > 99){
-        sendMessage($chatID,"true","Attività Didattiva: $attività_didattica\nPeriodo Iscrizioni: $periodo_iscrizioni\nData e turno: $data_e_turno\nDocente: $docente\nIscritti: $iscritti");
+      $val = similar_text($attivita_didattica, $nomemateria, $percent);
+      if($percent > 95){
+        sendMessage($chatID,"true","Attività Didattiva: $attivita_didattica\nPeriodo Iscrizioni: $periodo_iscrizioni\nData e turno: $data_e_turno\nDocente: $docente\nIscritti: $iscritti");
         $increment ++;
       }};
       if($increment != '0'){
