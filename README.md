@@ -4,7 +4,7 @@
 ## Librerie utilizzate
 - [PHP Simple HTML DOM Parser](https://simplehtmldom.sourceforge.io)
 
-## Funzioni
+## Indice Funzioni
 - Inviare gli orari delle lezioni
 - [Trovare le date dei prossimi appelli](#trovare-le-date-dei-prossimi-appelli)
 - Cercare su StudentIngegneria
@@ -13,9 +13,14 @@
 - Cercare un docente
 - Localizzare aule
 - Trovare compagno di studio
-- Cercare libri nel catalogo di ateneo
+- [Cercare libri nel catalogo di ateneo](#cercare-libri-nel-catalogo-di-ateneo)
 - Inviare il menu della mensa
 - Visionare le webcam Unisa
 
+## Come funziona
 ### Trovare le date dei prossimi appelli
 <a><img src="https://raw.githubusercontent.com/gistru/ing-unisa-bot/master/doc/esami.gif"></a>
+
+### Cercare libri nel catalogo di ateneo
+<a><img src="https://raw.githubusercontent.com/gistru/ing-unisa-bot/master/doc/biblio.gif"></a>
+
