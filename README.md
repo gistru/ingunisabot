@@ -16,3 +16,6 @@
 - Cercare libri nel catalogo di ateneo
 - Inviare il menu della mensa
 - Visionare le webcam Unisa
+
+### [Trovare le date dei prossimi appelli](Trovare le date dei prossimi appelli)
+<a><img src="https://raw.githubusercontent.com/gistru/ing-unisa-bot/master/doc/esami.gif"></a>
