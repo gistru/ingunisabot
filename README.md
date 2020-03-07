@@ -6,7 +6,7 @@
 
 ## Funzioni
 - Inviare gli orari delle lezioni
-- Trovare le date dei prossimi appelli
+- [Trovare le date dei prossimi appelli](trovare-le-date-dei-prossimi-appelli)
 - Cercare su StudentIngegneria
 - Cercare su r0x
 - Condividere cartelle GSuite
@@ -17,5 +17,5 @@
 - Inviare il menu della mensa
 - Visionare le webcam Unisa
 
-### [Trovare le date dei prossimi appelli](Trovare le date dei prossimi appelli)
+### Trovare le date dei prossimi appelli
 <a><img src="https://raw.githubusercontent.com/gistru/ing-unisa-bot/master/doc/esami.gif"></a>
