@@ -6,7 +6,7 @@
 
 ## Funzioni
 - Inviare gli orari delle lezioni
-- [Trovare le date dei prossimi appelli](trovare-le-date-dei-prossimi-appelli)
+- [Trovare le date dei prossimi appelli](#trovare-le-date-dei-prossimi-appelli)
 - Cercare su StudentIngegneria
 - Cercare su r0x
 - Condividere cartelle GSuite
