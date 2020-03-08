@@ -216,8 +216,8 @@ if($querydata == "menumensa"){
         }}else{
           editMessage($queryUserID,$querymsid,"true","<b>Il menu della mensa non verrà pubblicato oggi perchè festivo</b>");
         };
-        break;
-      };
+break;
+};
 
 
 
@@ -329,7 +329,7 @@ if($materia === NULL){
   $Row = mysql_fetch_assoc($search);
   $nomemateria = $Row["Esame"];
   if(!isset($nomemateria)){
-    $nomemateria="impossibile trovare materia";
+    $nomemateria = "impossibile trovare materia";
   }};
   if(isset($corso)){
     sendMessage($chatID,"true","<b>Corso di studi:</b> $corso\n<b>Cartella:</b> $cartella\n<b>Materia:</b> $nomemateria",$profile,'inline');
@@ -902,4 +902,5 @@ break;
 
 
 
-?>
+?>
+
