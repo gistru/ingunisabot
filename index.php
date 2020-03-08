@@ -45,8 +45,7 @@ $querymsid = $query["message"]["message_id"];
 Timezone
 ---------------------- */
 setlocale(LC_TIME, 'it_IT');
-$date = strftime("%a %d %b %Y");
-$dating = date("d/m/Y");
+$date = date("Y-m-d");
 $month = date("m");
 $time = date("H:i");
 $day = strftime("%a");
@@ -73,7 +72,7 @@ Query Data
 ---------------------- */
 // Mod Folder
 if($querydata == "modfolder"){
-mysql_query("UPDATE `Utenti` SET `State`='modfolder',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$queryUserID'");
+mysql_query("UPDATE `Utenti` SET `State`='modfolder',`Log`='$date $time' WHERE `ChatID` LIKE '$queryUserID'");
 editMessage($queryUserID,$querymsid,"true","<b>Ok, scrivi qui il nome della cartella seguito dal TOKEN</b>\n\n<i>https://drive.google.com/drive/folders/TOKEN</i>\n\n<i>Esempio</i>\nInformatica, 1jq5wZm47zukLO0pGeswsJ1do2fb2dVzZ");
 break;
 };
@@ -82,7 +81,7 @@ break;
 
 // Mod Subject
 if($querydata == "modsubject"){
-mysql_query("UPDATE `Utenti` SET `State`='modsubject',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$queryUserID'");
+mysql_query("UPDATE `Utenti` SET `State`='modsubject',`Log`='$date $time' WHERE `ChatID` LIKE '$queryUserID'");
 editMessage($queryUserID,$querymsid,"true","<b>Ok, quale materia stai studiando?</b>\n<i>Inserisci un insegnamento</i>");
 break;
 };
@@ -91,7 +90,7 @@ break;
 
 // Skip Folder
 if($querydata == "skip"){
-mysql_query("UPDATE `Utenti` SET `State`='0',`Cartella`='',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$queryUserID'");
+mysql_query("UPDATE `Utenti` SET `State`='0',`Cartella`='',`Log`='$date $time' WHERE `ChatID` LIKE '$queryUserID'");
 editMessage($queryUserID,$querymsid,"true","<b>Hai saltato questo passaggio</b>");
 sendMessage($queryUserID,$querymsid,"<b>Perfetto, abbiamo finito!</b>\n\nEcco il tuo /profilo");
 break;
@@ -103,7 +102,7 @@ break;
 if($querydata == "deletefeed"){
 mysql_query("DELETE FROM `Feedback` WHERE `Status`= -1");
 unset($randomString);
-mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$queryUserID'");
+mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='$date $time' WHERE `ChatID` LIKE '$queryUserID'");
 editMessage($queryUserID,$querymsid,"true","<b>Hai eliminato il tuo Feedback!</b>");
 break;
 };
@@ -121,7 +120,7 @@ break;
 
 // View Webcam
 if($querydata == "viewwebcam"){
-mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$queryUserID'");
+mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='$date $time' WHERE `ChatID` LIKE '$queryUserID'");
 editMessage($queryUserID,$querymsid,"true","<b>Quale webcam vuoi visionare?</b>",$menuwebcam,'inline');
 break;
 };
@@ -162,10 +161,10 @@ if($querydata == "roomfinder"){
   $id = $Row["ChatID"];
   $state = $Row["State"];
   if(isset($id)){
-    mysql_query("UPDATE `Utenti` SET `State`='aulario',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$queryUserID'");
+    mysql_query("UPDATE `Utenti` SET `State`='aulario',`Log`='$date $time' WHERE `ChatID` LIKE '$queryUserID'");
     editMessage($queryUserID,$querymsid,"true","<b>Ok, ora puoi cercare la tua aula</b>");
   }else{
-    mysql_query("INSERT INTO `Utenti`(`ChatID`, `Name`, `Username`, `State`, `Corso`, `Cartella`, `Materia`, `Log`) VALUES ('$queryUserID','$name','$username','aululario',NULL,'',NULL,'il $date alle $time')");
+    mysql_query("INSERT INTO `Utenti`(`ChatID`, `Name`, `Username`, `State`, `Corso`, `Cartella`, `Materia`, `Log`) VALUES ('$queryUserID','$name','$username','aululario',NULL,'',NULL,'$date $time')");
     editMessage($queryUserID,$querymsid,"true","<b>Ok, ora puoi cercare la tua aula</b>");
   };
   break;
@@ -180,10 +179,10 @@ $Row = mysql_fetch_assoc($search);
 $id = $Row["ChatID"];
 $state = $Row["State"];
 if(isset($id)){
-  mysql_query("UPDATE `Utenti` SET `State`='biblio',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$queryUserID'");
+  mysql_query("UPDATE `Utenti` SET `State`='biblio',`Log`='$date $time' WHERE `ChatID` LIKE '$queryUserID'");
   editMessage($queryUserID,$querymsid,"true","<b>Ok ora puoi cercare nel Catalogo di ateneo</b>");
 }else{
-  mysql_query("INSERT INTO `Utenti`(`ChatID`, `Name`, `Username`, `State`, `Corso`, `Cartella`, `Materia`, `Log`) VALUES ('$queryUserID','$name','$username','biblio',NULL,'',NULL,'il $date alle $time')");
+  mysql_query("INSERT INTO `Utenti`(`ChatID`, `Name`, `Username`, `State`, `Corso`, `Cartella`, `Materia`, `Log`) VALUES ('$queryUserID','$name','$username','biblio',NULL,'',NULL,'$date $time')");
   editMessage($queryUserID,$querymsid,"true","<b>Ok ora puoi cercare nel Catalogo di ateneo</b>");
 };
 break;
@@ -193,7 +192,7 @@ break;
 
 // Menu Mensa
 if($querydata == "menumensa"){
-  mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+  mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
   if($day !== "sab" && $day !== "dom"){
     if($time >= "00:01" && $time <= "10:00"){
       editMessage($queryUserID,$querymsid,"true","Torna più tardi, aggiorno questa funzione alle 10:00");
@@ -214,7 +213,7 @@ if($querydata == "menumensa"){
 
 // Active Users
 if($querydata == "activeusers"){
-mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$queryUserID'");
+mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='$date $time' WHERE `ChatID` LIKE '$queryUserID'");
 $users = mysql_query("SELECT * FROM `Utenti` WHERE `ChatID` ");
 $count = mysql_num_rows($users);
 editMessage($queryUserID,$querymsid,"true","<b>Utenti attivi: </b> $count");
@@ -225,7 +224,7 @@ break;
 
 // Send Feedback
 if($querydata == "sendfeedback"){
-mysql_query("UPDATE `Utenti` SET `State`='feedback',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$queryUserID'");
+mysql_query("UPDATE `Utenti` SET `State`='feedback',`Log`='$date $time' WHERE `ChatID` LIKE '$queryUserID'");
 editMessage($queryUserID,$querymsid,"true","<b>Modulo Feedback</b>\n\n<i>Riporta un problema o suggerisci una funzione</i>");
 break;
 };
@@ -242,7 +241,7 @@ switch ($text){
 // Start
 case '/start':
 sendMessage($chatID,"true","Ciao <b>$name!</b>\nBenvenuto su <b>IngUnisaBot</b>.\n\nPer utilizzare alcune funzioni devi impostare un tuo profilo.\nPer farlo utilizza il comando /config.\nSe non sei interessato ignora questo step o configuralo più tardi.\n\nDigita /comandi per visualizzare i comandi del bot o seleziona una funzione dal menu");
-mysql_query("INSERT INTO `Utenti`(`ChatID`, `Name`, `Username`, `State`, `Corso`, `Cartella`, `Materia`, `Log`) VALUES ('$chatID','$name','$username','0',NULL,'',NULL,'il $date alle $time')");
+mysql_query("INSERT INTO `Utenti`(`ChatID`, `Name`, `Username`, `State`, `Corso`, `Cartella`, `Materia`, `Log`) VALUES ('$chatID','$name','$username','0',NULL,'',NULL,'$date $time')");
 break;
 
 
@@ -255,16 +254,16 @@ break;
 
 
 // Modul Backend Feedback
-case 'password':
-mysql_query("UPDATE `Utenti` SET `State`='password',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+case 'code':
+mysql_query("UPDATE `Utenti` SET `State`='code',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
 sendMessage($chatID,"true","Sei nel modulo segreto feedback. Premi un tasto");
 break;
 
 
 
 // Modul Backend Message
-case 'password':
-mysql_query("UPDATE `Utenti` SET `State`='password',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+case 'code':
+mysql_query("UPDATE `Utenti` SET `State`='code',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
 sendMessage($chatID,"true","Sei nel modulo segreto contatti. Puoi mandare un messaggio a tutti i membri");
 break;
 
@@ -277,9 +276,9 @@ $Row = mysql_fetch_assoc($search);
 $id = $Row["ChatID"];
 $state = $Row["State"];
 if(isset($id)){
-  mysql_query("UPDATE `Utenti` SET `State`='config',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+  mysql_query("UPDATE `Utenti` SET `State`='config',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
 }else{
-  mysql_query("INSERT INTO `Utenti`(`ChatID`, `Name`, `Username`, `State`, `Corso`, `Cartella`, `Materia`, `Log`) VALUES ('$chatID','$name','$username','config',NULL,'',NULL,'il $date alle $time')");
+  mysql_query("INSERT INTO `Utenti`(`ChatID`, `Name`, `Username`, `State`, `Corso`, `Cartella`, `Materia`, `Log`) VALUES ('$chatID','$name','$username','config',NULL,'',NULL,'$date $time')");
 };
 sendMessage($chatID,"true","Quando vuoi iniziamo",$start,'real');
 break;
@@ -288,7 +287,7 @@ break;
 
 // Info
 case '/info':
-mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
 sendMessage($chatID,"true","Per info, termini e condizioni di utilizzo clicca qui",$info,'inline');
 break;
 
@@ -321,7 +320,7 @@ break;
 // Esc
 case 'Esci':
 sendMessage($chatID,"true","<b>Operazione Annullata</b>",$exit,"hide");
-mysql_query("UPDATE `Utenti` SET `State`='0', `Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+mysql_query("UPDATE `Utenti` SET `State`='0', `Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
 exit();
 break;
 
@@ -330,7 +329,7 @@ break;
 // Canc
 case '/canc':
 sendMessage($chatID,"true","<b>Operazione Annullata</b>",$exit,"hide");
-mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
 exit();
 break;
 
@@ -338,7 +337,7 @@ break;
 
 // Lessons
 case '/orari':
-mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
 $search = mysql_query("SELECT * FROM `Utenti` WHERE `ChatID` LIKE '$chatID'");
 $Row = mysql_fetch_assoc($search);
 $id = $Row["ChatID"];
@@ -364,7 +363,7 @@ break;
 
 // Exams
 case '/esami':
-mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
 $search = mysql_query("SELECT * FROM `Utenti` WHERE `ChatID` LIKE '$chatID'");
 $Row = mysql_fetch_assoc($search);
 $id = $Row["ChatID"];
@@ -433,10 +432,10 @@ $Row = mysql_fetch_assoc($search);
 $id = $Row["ChatID"];
 $state = $Row["State"];
 if(isset($id)){
-  mysql_query("UPDATE `Utenti` SET `State`='r0x',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+  mysql_query("UPDATE `Utenti` SET `State`='r0x',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
   sendMessage($chatID,"true","<b>Ok, ora puoi cercare su r0x.it</b>");
 }else{
-  mysql_query("INSERT INTO `Utenti`(`ChatID`, `Name`, `Username`, `State`, `Corso`, `Cartella`, `Materia`, `Log`) VALUES ('$chatID','$name','$username','r0x',NULL,'',NULL,'il $date alle $time')");
+  mysql_query("INSERT INTO `Utenti`(`ChatID`, `Name`, `Username`, `State`, `Corso`, `Cartella`, `Materia`, `Log`) VALUES ('$chatID','$name','$username','r0x',NULL,'',NULL,'$date $time')");
   sendMessage($chatID,"true","<b>Ok, ora puoi cercare su r0x.it</b>");
 };
 break;
@@ -445,7 +444,7 @@ break;
 
 // Sharing Folders
 case '/cartellecondivise':
-mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
 $search = mysql_query("SELECT * FROM `Utenti` WHERE `ChatID` LIKE '$chatID'");
 $Row = mysql_fetch_assoc($search);
 $id = $Row["ChatID"];
@@ -474,7 +473,7 @@ break;
 
 // StudentIngegneria
 case '/studentingegneria':
-mysql_query("UPDATE `Utenti` SET `State`='SI',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+mysql_query("UPDATE `Utenti` SET `State`='SI',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
 sendMessage($chatID,"true","<b>Ok, ora puoi cercare sul sito StudentIngengeria</b>");
 break;
 
@@ -482,7 +481,7 @@ break;
 
 // Friend Finder
 case '/trovacompagno':
-mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
 $search = mysql_query("SELECT * FROM `Utenti` WHERE `ChatID` LIKE '$chatID'");
 $Row = mysql_fetch_assoc($search);
 $id = $Row["ChatID"];
@@ -496,11 +495,15 @@ if(!empty($username)){
       while($Row = mysql_fetch_assoc($search)){
         $friend = $Row["Username"];
         if(!empty($friend)){
-          $friends[] = $friend;
+          $friends[] = "@$friend";
         }};
         if(isset($friends)){
+          $fcount = count($friends);
           $friends = implode("\n\n", $friends);
-          sendMessage($chatID,"true",$friends);
+          $search = mysql_query("SELECT * FROM `Esami` WHERE `Corso` LIKE '$corso' AND `Code` LIKE '$materia'");
+          $Row = mysql_fetch_assoc($search);
+          $nomemateria = $Row["Esame"];
+          sendMessage($chatID,"true","Ho trovato $fcount utenti che stanno studiando $nomemateria:\n\n$friends");
         }else{
           $search = mysql_query("SELECT * FROM `Esami` WHERE `Corso` LIKE '$corso' AND `Code` LIKE '$materia'");
           $Row = mysql_fetch_assoc($search);
@@ -519,7 +522,7 @@ break;
 
 // Mensa
 case '/mensa':
-mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
 if($day !== "sab" && $day !== "dom"){
   if($time >= "00:01" && $time <= "10:00"){
     sendMessage($chatID,"true","Torna più tardi, aggiorno questa funzione alle 10:00");
@@ -539,7 +542,7 @@ break;
 
 // Teacher Finder
 case '/cercadocente':
-mysql_query("UPDATE `Utenti` SET `State`='docente',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+mysql_query("UPDATE `Utenti` SET `State`='docente',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
 sendMessage($chatID,"true","<b>Ok, ora puoi cercare un docente</b>");
 break;
 
@@ -552,10 +555,10 @@ $Row = mysql_fetch_assoc($search);
 $id = $Row["ChatID"];
 $state = $Row["State"];
 if(isset($id)){
-  mysql_query("UPDATE `Utenti` SET `State`='biblio',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+  mysql_query("UPDATE `Utenti` SET `State`='biblio',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
   sendMessage($chatID,"true","<b>Ok, ora puoi cercare nel Catalogo di ateneo</b>");
 }else{
-  mysql_query("INSERT INTO `Utenti`(`ChatID`, `Name`, `Username`, `State`, `Corso`, `Cartella`, `Materia`, `Log`) VALUES ('$chatID','$name','$username','biblio',NULL,'',NULL,'il $date alle $time')");
+  mysql_query("INSERT INTO `Utenti`(`ChatID`, `Name`, `Username`, `State`, `Corso`, `Cartella`, `Materia`, `Log`) VALUES ('$chatID','$name','$username','biblio',NULL,'',NULL,'$date $time')");
   sendMessage($chatID,"true","<b>Ok, ora puoi cercare nel Catalogo di ateneo</b>");
 };
 break;
@@ -590,7 +593,7 @@ $ingegneria = $Row["Ingegneria"];
 if(isset($id)){
 // State Config
 if($state == "config"){
-mysql_query("UPDATE `Utenti` SET `State`='config1',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+mysql_query("UPDATE `Utenti` SET `State`='config1',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
 sendMessage($chatID,"true","<b>Qual è il tuo corso di studi?</b>\n\nDigital health and bioinformatic engineering - Magistrale [06229]\nFood engineering - Magistrale [06228]\nIngegneria chimica - Magistrale [06222]\nIngegneria civile - Magistrale [06221]\nIngegneria elettronica - Magistrale [06224]\nIngegneria gestionale - Magistrale [06226]\nIngegneria informatica - Magistrale [06227]\nIngegneria meccanica - Magistrale [06223]\nIngegneria per l'ambiente e il territorio - Magistrale [06225]\nIngegneria chimica - triennale [06122]\nIngegneria civile - triennale [06121]\nIngegneria civile per l'ambiente e il territorio - triennale [06125]\nIngegneria elettronica - triennale [06124]\nIngegneria gestionale - triennale [06126]\nIngegneria informatica - triennale [06127]\nIngegneria meccanica - triennale [06123]\nIngegneria edile-architettura - quinquennale [06601]\n\n<i>Inserisci il codice corrispondente posto tra parentesi quadre</i>",$start,'hide');
 }
 
@@ -599,7 +602,7 @@ sendMessage($chatID,"true","<b>Qual è il tuo corso di studi?</b>\n\nDigital hea
 // State Config 1
 else if($state == "config1"){
   if($text == "06229"||$text == "06228"|| $text == "06222"||$text == "06221"||$text == "06224"||$text == "06226"||$text == "06227"||$text == "06223"||$text == "06225"||$text == "06122"||$text == "06121"||$text == "06125"||$text == "06124"||$text == "06126"||$text == "06127"||$text == "06123"||$text == "06601"){
-    mysql_query("UPDATE `Utenti` SET `State`='config2',`Corso`='$text',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+    mysql_query("UPDATE `Utenti` SET `State`='config2',`Corso`='$text',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
     sendMessage($chatID,"true","Con G Suite gli studenti Unisa hanno spazio illimitato in cloud\n\nTi piacerebbe condividere una cartella con altri studenti del tuo corso?\n\nCon la funziona /cartellecondivise in seguito posso individuare tutte le cartelle di altri studenti che hanno fatto lo stesso\n\n<b>Scrivi qui il nome della cartella seguito dal TOKEN</b>\n\n<i>https://drive.google.com/drive/folders/TOKEN</i>\n\n<i>Esempio</i>\nInformatica, 1jq5wZm47zukLO0pGeswsJ1do2fb2dVzZ");
     sendMessage($chatID,"true","Non ora?",$skipmenu,'inline');
   }else{
@@ -625,7 +628,7 @@ else if($state == "config2"){
     sendMessage($chatID,"true","Non hai inserito un link valido");
     curl_close($handle);
   }else{
-    mysql_query("UPDATE `Utenti` SET `State`='0',`Cartella`='$nome_cartella, $url',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+    mysql_query("UPDATE `Utenti` SET `State`='0',`Cartella`='$nome_cartella, $url',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
     sendMessage($chatID,"true","<b>Perfetto, abbiamo finito!</b>\n\nEcco il tuo /profilo");
     curl_close($handle);
   }
@@ -726,7 +729,7 @@ else if($state == 'SI'){
 
 
 // State Backend Message
-else if($state == "password"){
+else if($state == "code"){
   $search = mysql_query("SELECT * FROM `Utenti` WHERE `ChatID`");
   while($Row = mysql_fetch_assoc($search))
   {
@@ -740,7 +743,7 @@ else if($state == "password"){
 
 
 // State Backend Feedback
-else if($state == "password"){
+else if($state == "code"){
   $search = mysql_query("SELECT * FROM `Feedback`");
   while($Row = mysql_fetch_assoc($search))
   {
@@ -771,7 +774,7 @@ else if($state == "modfolder"){
     sendMessage($chatID,"true","Non hai inserito un token valido");
     curl_close($handle);
   }else{
-    mysql_query("UPDATE `Utenti` SET `State`='0',`Cartella`='$nome_cartella, $url',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+    mysql_query("UPDATE `Utenti` SET `State`='0',`Cartella`='$nome_cartella, $url',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
     sendMessage($chatID,"true","<b>Perfetto, abbiamo finito!</b>\n\nEcco il tuo /profilo");
     curl_close($handle);
   }
@@ -782,7 +785,7 @@ else if($state == "modfolder"){
 
 // State Feedback
 else if($state == 'feedback'){
-  mysql_query("INSERT INTO `Feedback`(`Feedback`, `Captcha`, `Status`, `Log`) VALUES ('$text','0','-1','il $date alle $time')");
+  mysql_query("INSERT INTO `Feedback`(`Feedback`, `Captcha`, `Status`, `Log`) VALUES ('$text','0','-1','$date $time')");
   $characters = '0123456789';
   $randomString = '';
   $lunghezza = 5;
@@ -790,7 +793,7 @@ else if($state == 'feedback'){
     $index = rand(0, strlen($characters) - 1);
     $randomString .= $characters[$index];
   }
-  mysql_query("UPDATE `Utenti` SET `State`='fbv',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+  mysql_query("UPDATE `Utenti` SET `State`='fbv',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
   mysql_query("UPDATE `Feedback` SET `Captcha`='$randomString'  WHERE `Feedback` LIKE '$text'");
   sendMessage($chatID,"true","Per confermare l'invio del messaggio scrivi il seguente captcha altrimenti eliminalo:\n\n$randomString",$eliminafeeback,'inline');
 }
@@ -805,12 +808,12 @@ else if($state == "fbv"){
   if($text == "$captcha"){
     mysql_query("UPDATE `Feedback` SET `Status`='1'  WHERE `Captcha` LIKE '$text'");
     unset($randomString);
-    mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+    mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
     sendMessage($chatID,"true","<b>Messaggio inviato correttamente!</b>");
   }else{
     mysql_query("DELETE FROM `Feedback` WHERE `Status`= -1 ");
     unset($randomString);
-    mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+    mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
     sendMessage($chatID,"true","Errore nella sintassi del captcha. Il messaggio è stato eliminato");
   }}
 
@@ -869,7 +872,7 @@ else if($state == 'aulario'){
 
 // State Mod Subject
 else if($state == 'modsubject'){
-  mysql_query("UPDATE `Utenti` SET `State`='modsubject1',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+  mysql_query("UPDATE `Utenti` SET `State`='modsubject1',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
   $search = mysql_query("SELECT * FROM `Esami` WHERE `Esame` LIKE '%$text%' AND `Corso` LIKE '$corso'");
   while($Row = mysql_fetch_assoc($search)){
     $esame = $Row["Esame"];
@@ -880,7 +883,7 @@ else if($state == 'modsubject'){
     sendMessage($chatID,"true","Scrivi il codice della materia che stai studiando");
     sendMessage($chatID,"true", str_replace(array('[',']','{','}','"',',','        '), '', json_encode($subjects, JSON_PRETTY_PRINT | ENT_NOQUOTES | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_LINE_TERMINATORS | JSON_UNESCAPED_UNICODE)));
   }else{
-    mysql_query("UPDATE `Utenti` SET `State`='modsubject',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+    mysql_query("UPDATE `Utenti` SET `State`='modsubject',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
     sendMessage($chatID,"true","Mi dispiace, non ho trovato materie con questo nome inerente al tuo corso, riprova");
   }}
 
@@ -888,7 +891,7 @@ else if($state == 'modsubject'){
 
 // State Mod Subject 1
 else if($state == 'modsubject1'){
-mysql_query("UPDATE `Utenti` SET `State`='0',`Materia`='$text',`Log`='il $date alle $time' WHERE `ChatID` LIKE '$chatID'");
+mysql_query("UPDATE `Utenti` SET `State`='0',`Materia`='$text',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
 sendMessage($chatID,"true","<b>Perfetto, ho impostato la tua materia di studio</b>");
 }
 
@@ -910,5 +913,4 @@ break;
 
 
 
-?>
-
+?>
