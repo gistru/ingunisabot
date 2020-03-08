@@ -46,9 +46,9 @@ Timezone
 ---------------------- */
 setlocale(LC_TIME, 'it_IT');
 $date = date("Y-m-d");
-$month = date("m");
 $time = date("H:i");
 $day = strftime("%a");
+$_day = date("m-d");
 $timestamp = time();
 
 
@@ -193,21 +193,31 @@ break;
 // Menu Mensa
 if($querydata == "menumensa"){
   mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
-  if($day !== "sab" && $day !== "dom"){
-    if($time >= "00:01" && $time <= "10:00"){
-      editMessage($queryUserID,$querymsid,"true","Torna più tardi, aggiorno questa funzione alle 10:00");
-    }else if($time >= "10:00" && $time <= "15:00"){
-      editMessage($queryUserID,$querymsid,"true","<b>Ok, ti invio il menu della mensa di oggi, attendi...</b>");
-      $xml = simplexml_load_file('http://ammensa-unisa.appspot.com');
-      $menuUrl = $xml->menu->menuUrl;
-      sendDocument($queryUserID,"$menuUrl");
-    }else{
-      editMessage($queryUserID,$querymsid,"true","<b>Sono le $time, torna domani per il nuovo menu</b>");
-    }}else{
-      editMessage($queryUserID,$querymsid,"true","<b>Il menu della mensa non verrà pubblicato oggi</b>");
-    };
-    break;
-  };
+  $increment = 0;
+  $search = mysql_query("SELECT * FROM `Festivi`");
+  while($Row = mysql_fetch_assoc($search)){
+    $festivo = $Row["Festivo"];
+    if($_day == "$festivo"){
+      $increment++;
+    }};
+    if($increment == "0"){
+      if($day !== "sab" && $day !== "dom"){
+        if($time >= "00:01" && $time <= "10:00"){
+          editMessage($queryUserID,$querymsid,"true","Torna più tardi, aggiorno questa funzione alle 10:00");
+        }else if($time >= "10:00" && $time <= "15:00"){
+          editMessage($queryUserID,$querymsid,"true","<b>Ok, ti invio il menu della mensa di oggi, attendi...</b>");
+          $xml = simplexml_load_file('http://ammensa-unisa.appspot.com');
+          $menuUrl = $xml->menu->menuUrl;
+          sendDocument($queryUserID,"$menuUrl");
+        }else{
+          editMessage($queryUserID,$querymsid,"true","<b>Sono le $time, torna domani per il nuovo menu</b>");
+        }}else{
+          editMessage($queryUserID,$querymsid,"true","<b>Il menu della mensa non verrà pubblicato oggi</b>");
+        }}else{
+          editMessage($queryUserID,$querymsid,"true","<b>Il menu della mensa non verrà pubblicato oggi perchè festivo</b>");
+        };
+        break;
+      };
 
 
 
@@ -255,8 +265,21 @@ break;
 
 // Modul Backend Feedback
 case 'code':
-mysql_query("UPDATE `Utenti` SET `State`='code',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
-sendMessage($chatID,"true","Sei nel modulo segreto feedback. Premi un tasto");
+mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
+sendMessage($chatID,"true","Sei nel backend feedback.");
+$search = mysql_query("SELECT * FROM `Feedback`");
+while($Row = mysql_fetch_assoc($search))
+{
+  $feedback = $Row["Feedback"];
+  $feedbacks[] = $feedback;
+};
+if(!empty($feedbacks)){
+$feedbacks = implode("\n\n", $feedbacks);
+sendMessage($chatID,"true", "$feedbacks");
+sendMessage($chatID,"true","Ricerca Feedback Completata");
+}else{
+  sendMessage($chatID,"true","Non ci sono feedback");
+}
 break;
 
 
@@ -264,7 +287,7 @@ break;
 // Modul Backend Message
 case 'code':
 mysql_query("UPDATE `Utenti` SET `State`='code',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
-sendMessage($chatID,"true","Sei nel modulo segreto contatti. Puoi mandare un messaggio a tutti i membri");
+sendMessage($chatID,"true","Sei nel backend messaggi. Puoi mandare un messaggio a tutti i membri");
 break;
 
 
@@ -520,26 +543,6 @@ break;
 
 
 
-// Mensa
-case '/mensa':
-mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
-if($day !== "sab" && $day !== "dom"){
-  if($time >= "00:01" && $time <= "10:00"){
-    sendMessage($chatID,"true","Torna più tardi, aggiorno questa funzione alle 10:00");
-  }else if($time >= "10:00" && $time <= "15:00"){
-    sendMessage($chatID,"true","<b>Ok, ti invio il menu della mensa di oggi</b>");
-    $xml = simplexml_load_file('http://ammensa-unisa.appspot.com');
-    $menuUrl = $xml->menu->menuUrl;
-    sendDocument($chatID,"$menuUrl");
-  }else{
-    sendMessage($chatID,"true","<b>Sono le $time, torna domani per il nuovo menu</b>");
-  }}else{
-    sendMessage($chatID,"true","<b>Il menu della mensa non verrà pubblicato oggi</b>");
-  };
-break;
-
-
-
 // Teacher Finder
 case '/cercadocente':
 mysql_query("UPDATE `Utenti` SET `State`='docente',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
@@ -737,23 +740,9 @@ else if($state == "code"){
     if($id != $chatID){
       sendMessage($id,"true","$text");
     }};
-    sendMessage($chatID,"true","Invio Completato");
+    sendMessage($chatID,"true","Invio Messaggio Completato");
+    mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
   }
-
-
-
-// State Backend Feedback
-else if($state == "code"){
-  $search = mysql_query("SELECT * FROM `Feedback`");
-  while($Row = mysql_fetch_assoc($search))
-  {
-    $feedback = $Row["Feedback"];
-    $feedbacks[] = $feedback;
-  };
-  $feedbacks = implode("\n\n", $feedbacks);
-  sendMessage($chatID,"true", "$feedbacks");
-  sendMessage($chatID,"true","Ricerca Feedback Completato");
-}
 
 
 
