@@ -50,19 +50,23 @@ $time = date("H:i");
 $day = strftime("%a");
 $_day = date("m-d");
 $timestamp = time();
+$day_0 = date("d-m-Y");
+$day_1 = strtotime($day_0);
+
 
 
 
 /* ----------------------
 Menus
 ---------------------- */
-$start ='[{"text":"Iniziamo","callback_data":"start"}]';
-$profile = '[{"text":"Modifica%20Cartella","callback_data":"modfolder"}],[{"text":"Modifica%20Materia","callback_data":"modsubject"}],[{"text":"Cancella%20Profilo","callback_data":"delprofile"}]';
+$corsi_menu ='[{"text":"Digital%20health%20and%20bioinformatic%20-%20Magistrale","callback_data":"06229"}],[{"text":"Alimentare%20-%20Magistrale","callback_data":"06228"}],[{"text":"Chimica%20-%20Magistrale","callback_data":"06222"}],[{"text":"Civile%20-%20Magistrale","callback_data":"06221"}],[{"text":"Elettronica%20-%20Magistrale","callback_data":"06224"}],[{"text":"Gestionale%20-%20Magistrale","callback_data":"06226"}],[{"text":"Informatica%20-%20Magistrale","callback_data":"06227"}],[{"text":"Meccanica%20-%20Magistrale","callback_data":"06223"}],[{"text":"Civile%20ambiente%20e%20territorio%20-%20Magistrale","callback_data":"06225"}],[{"text":"Chimica%20-%20Triennale","callback_data":"06122"}],[{"text":"Civile%20-%20Triennale","callback_data":"06121"}],[{"text":"Civile%20ambiente%20e%20territorio%20-%20Triennale","callback_data":"06125"}],[{"text":"Elettronica%20-%20Triennale","callback_data":"06124"}],[{"text":"Gestionale%20-%20Triennale","callback_data":"06126"}],[{"text":"Informatica%20-%20Triennale","callback_data":"06127"}],[{"text":"Meccanica%20-%20Triennale","callback_data":"06123"}],[{"text":"Edile-architettura%20-%20Quinquennale","callback_data":"06601"}]';
+$orarimenu = '[{"text":"Invia%20PDF","callback_data":"oraripdf"}],[{"text":"Invia%20per%20materia","callback_data":"orarimateria"}],[{"text":"Invia%20per%20anno","callback_data":"orarianno"}],[{"text":"Importare%20in%20Calendar","callback_data":"importgooglecalendar"}]';
+$profile = '[{"text":"Modifica%20Materia","callback_data":"modsubject"}],[{"text":"Cancella%20Profilo","callback_data":"delprofile"}]';
 $skipmenu = '[{"text":"Salta%20questo%20passaggio","callback_data":"skip"}]';
 $eliminafeeback = '[{"text":"Elimina%20feeback","callback_data":"deletefeed"}]';
-$utilitymenu = '[{"text":"Visualizza%20Webcam","callback_data":"viewwebcam"},{"text":"Aulario","callback_data":"roomfinder"}],[{"text":"Cerca%20in%20Biblioteca","callback_data":"biblio"},{"text":"Menu%20Mensa","callback_data":"menumensa"}]';
+$utilitymenu = '[{"text":"Visualizza%20Webcam","callback_data":"viewwebcam"},{"text":"Aule%20libere","callback_data":"aulelibere"}],[{"text":"Cerca%20in%20Biblioteca","callback_data":"biblio"},{"text":"Menu%20Mensa","callback_data":"menumensa"}]';
 $menuwebcam = '[{"text":"Piazza%20del%20Rettorato","callback_data":"webcamrettorato"}],[{"text":"Piazza%20del%20Sapere","callback_data":"webcamsapere"}],[{"text":"Veduta%20verso%20Ovest","callback_data":"webcamovest"}]';
-$info = '[{"text":"Termini%20e%20Condizioni","url":"https://github.com/gistru/ing-unisa-bot/blob/master/terms.md"}],[{"text":"Utenti%20Attivi","callback_data":"activeusers"}],[{"text":"Invia%20Feedback","callback_data":"sendfeedback"}]';
+$info = '[{"text":"Github","url":"https://github.com/gstru/ing-unisa-bot/"}]';
 $exit = '[{"text":"","callback_data":""}]';
 
 
@@ -70,40 +74,18 @@ $exit = '[{"text":"","callback_data":""}]';
 /* ----------------------
 Query Data
 ---------------------- */
-// Mod Folder
-if($querydata == "modfolder"){
-mysql_query("UPDATE `Utenti` SET `State`='modfolder',`Log`='$date $time' WHERE `ChatID` LIKE '$queryUserID'");
-editMessage($queryUserID,$querymsid,"true","<b>Ok, scrivi qui il nome della cartella seguito dal TOKEN</b>\n\n<i>https://drive.google.com/drive/folders/TOKEN</i>\n\n<i>Esempio</i>\nInformatica, 1jq5wZm47zukLO0pGeswsJ1do2fb2dVzZ");
+// State Config
+if($querydata == "06229"||$querydata == "06228"||$querydata == "06222"||$querydata == "06221"||$querydata == "06224"||$querydata == "06226"||$querydata == "06227"||$querydata == "06223"||$querydata == "06225"||$querydata == "06122"||$querydata == "06121"||$querydata == "06125"||$querydata == "06124"||$querydata == "06126"||$querydata == "06127"||$querydata == "06123"||$querydata == "06601"){
+mysql_query("UPDATE `Utenti` SET `State`='config5',`Corso`='$querydata',`Log`='$date $time' WHERE `ChatID` LIKE '$queryUserID'");
+editMessage($queryUserID,$querymsid,"true","<b>Perfetto, abbiamo finito!</b>\n\nEcco il tuo /profilo");
 break;
 };
-
 
 
 // Mod Subject
 if($querydata == "modsubject"){
 mysql_query("UPDATE `Utenti` SET `State`='modsubject',`Log`='$date $time' WHERE `ChatID` LIKE '$queryUserID'");
 editMessage($queryUserID,$querymsid,"true","<b>Ok, quale materia stai studiando?</b>\n<i>Inserisci un insegnamento</i>");
-break;
-};
-
-
-
-// Skip Folder
-if($querydata == "skip"){
-mysql_query("UPDATE `Utenti` SET `State`='0',`Cartella`='',`Log`='$date $time' WHERE `ChatID` LIKE '$queryUserID'");
-editMessage($queryUserID,$querymsid,"true","<b>Hai saltato questo passaggio</b>");
-sendMessage($queryUserID,$querymsid,"<b>Perfetto, abbiamo finito!</b>\n\nEcco il tuo /profilo");
-break;
-};
-
-
-
-// Del Feedback
-if($querydata == "deletefeed"){
-mysql_query("DELETE FROM `Feedback` WHERE `Status`= -1");
-unset($randomString);
-mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='$date $time' WHERE `ChatID` LIKE '$queryUserID'");
-editMessage($queryUserID,$querymsid,"true","<b>Hai eliminato il tuo Feedback!</b>");
 break;
 };
 
@@ -117,6 +99,43 @@ break;
 };
 
 
+
+// Orari PDF
+if($querydata == "oraripdf"){
+  $search = mysql_query("SELECT * FROM `Utenti` WHERE `ChatID` LIKE '$queryUserID'");
+  $Row = mysql_fetch_assoc($search);
+  $id = $Row["ChatID"];
+  $corso = $Row["Corso"];
+  if(isset($id)){
+    if(isset($corso)){
+      $search = mysql_query("SELECT * FROM `Corsi` WHERE `Corso` LIKE '$corso'");
+      $Row = mysql_fetch_assoc($search);
+      $NomeDipartimento = $Row["NomeDipartimento"];
+      $CodeLink = $Row["CodeLink"];
+      $link = $Row["Link"];
+      $CorsoLink = $Row["CorsoLink"];
+      editMessage($queryUserID,$querymsid,"true","Ok, provo a recuperare il calendario in pdf");
+      $easycourse = "https://easycourse.unisa.it/EasyCourse/Orario/Dipartimento_di_Ingegneria_$NomeDipartimento/2021-2022/$CodeLink/Curricula/".$link.$CorsoLink.$corso.".pdf?$timestamp";
+      $handle = curl_init($easycourse);
+      curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
+      $response = curl_exec($handle);
+      $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+      if($httpCode !== 404 AND $httpCode !== 500 ) {
+        sendDocument($queryUserID,$easycourse);
+      }else{
+        editMessage($queryUserID,$querymsid,"true","Niente, il link in questo momento non funziona");
+      }
+    };
+  };
+  break;
+};
+
+// Import Google Calendar
+if($querydata == "importgooglecalendar"){
+$url = "https://telegra.ph/Come-importare-il-calendario-EasyCourse-in-Google-Calendar-con-i-Fogli-di-Google-09-17";
+editMessage($queryUserID,$querymsid,"false",$url);
+break;
+};
 
 // View Webcam
 if($querydata == "viewwebcam"){
@@ -155,37 +174,93 @@ break;
 
 
 // Room Finder
-if($querydata == "roomfinder"){
-  $search = mysql_query("SELECT * FROM `Utenti` WHERE `ChatID` LIKE '$queryUserID'");
-  $Row = mysql_fetch_assoc($search);
-  $id = $Row["ChatID"];
-  $state = $Row["State"];
-  if(isset($id)){
-    mysql_query("UPDATE `Utenti` SET `State`='aulario',`Log`='$date $time' WHERE `ChatID` LIKE '$queryUserID'");
-    editMessage($queryUserID,$querymsid,"true","<b>Ok, ora puoi cercare la tua aula</b>");
-  }else{
-    mysql_query("INSERT INTO `Utenti`(`ChatID`, `Name`, `Username`, `State`, `Corso`, `Cartella`, `Materia`, `Log`) VALUES ('$queryUserID','$name','$username','aululario',NULL,'',NULL,'$date $time')");
-    editMessage($queryUserID,$querymsid,"true","<b>Ok, ora puoi cercare la tua aula</b>");
+if($querydata == "aulelibere"){
+  editMessage($queryUserID,$querymsid,"true","<b>Ok cerco le aule libere attendi...</b>");
+  $buildings = ["FSTEC-05-06","FINV-09C","FINV-07E"];
+  $n_buildings = count($buildings);
+  for($i=0; $i<$n_buildings; $i++){
+    $agenda_unisa = "https://www.unisa.it/proxy-test/easycourse/AgendaStudenti/rooms_call_new.php?sede=$buildings[$i]&date=$day_0";
+    $newupdates = file_get_contents($agenda_unisa);
+    $newupdates = json_decode($newupdates,TRUE);
+    $edificio = $newupdates["area_rooms"]["$buildings[$i]"];
+    $n_events = $newupdates["n_events"];
+    $events = $newupdates["events"];
+    if($n_events > 0){
+      for($j=0; $j<$n_events; $j++){
+        $CodiceAula = $events["$j"]["CodiceAula"];
+        $CodiciAule[] = $CodiceAula;
+      }
+      $n_CodiciAule = count($CodiciAule);
+      $rooms = array();
+      foreach($edificio as $room => $value) {
+        if(!in_array($room, $rooms))
+        {
+          array_push($rooms,$room);
+        }
+      }
+      $n_rooms = count($rooms);
+      for($k=0; $k<$n_rooms; $k++){
+        $room_code = $edificio["$rooms[$k]"]["room_code"];
+        $room_name = $edificio["$rooms[$k]"]["room_name"];
+        $area_code = $edificio["$rooms[$k]"]["area_code"];
+        $area_name = $edificio["$rooms[$k]"]["area"];
+        if(in_array($room_code, $CodiciAule)){
+          for($g=0; $g<$n_CodiciAule; $g++){
+            $NomeAula = $events["$g"]["NomeAula"];
+            $CodAula = $events["$g"]["CodiceAula"];
+            $NomeSede = $events["$g"]["NomeSede"];
+            $AppStart = $events["$g"]["from"];
+            $AppStart = date('H:i', strtotime($AppStart));
+            $AppEnd = $events["$g"]["to"];
+            $AppEnd = date('H:i', strtotime($AppEnd));
+            $Slot = "&#x26D4; <b>è occupata dalle $AppStart alle $AppEnd</b> &#x26D4;";
+            if($NomeAula !== NULL){
+              $item["NomeAula"] = $NomeAula;
+              $item["NomeSede"] = $NomeSede;
+              $item["CodiceAula"] = $CodAula;
+              $item["Slot"] = $Slot;
+              $classi[] = $item;
+            };
+          }}else{
+            $item["NomeAula"] = "$room_name";
+            $item["NomeSede"] = "$area_name";
+            $item["CodiceAula"] = "$room_code";
+            $item["Slot"] = "&#x2705; <b>è libera per tutta la giornata</b> &#x2705;";
+            $classi[] = $item;
+          }
+        }
+      };
+    };
+    editMessage($queryUserID,$querymsid,"true","<b>Ci sono quasi...</b>");
+    $classi = array_values(array_unique($classi, SORT_REGULAR));
+    // $classi = json_encode($classi);
+    foreach ($classi as $key1 => $value1) {
+      foreach ($value1 as $key2) {
+        $items[] = $key2;
+      }
+      sendMessage($queryUserID,"true", str_replace(array('[',']','{','}','"',',','    '), '', json_encode($items, JSON_PRETTY_PRINT | ENT_NOQUOTES | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_LINE_TERMINATORS | JSON_UNESCAPED_UNICODE)));
+      unset($items);
+    }
+    // editMessage($queryUserID,"true", str_replace(array('[',']','{','}','"',',','    '), '', json_encode($classi, JSON_PRETTY_PRINT | ENT_NOQUOTES | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_LINE_TERMINATORS | JSON_UNESCAPED_UNICODE)));
+    break;
   };
-  break;
-};
 
 
 
 // Biblio
 if($querydata == "biblio"){
-$search = mysql_query("SELECT * FROM `Utenti` WHERE `ChatID` LIKE '$queryUserID'");
-$Row = mysql_fetch_assoc($search);
-$id = $Row["ChatID"];
-$state = $Row["State"];
-if(isset($id)){
-  mysql_query("UPDATE `Utenti` SET `State`='biblio',`Log`='$date $time' WHERE `ChatID` LIKE '$queryUserID'");
-  editMessage($queryUserID,$querymsid,"true","<b>Ok ora puoi cercare nel Catalogo di ateneo</b>");
-}else{
-  mysql_query("INSERT INTO `Utenti`(`ChatID`, `Name`, `Username`, `State`, `Corso`, `Cartella`, `Materia`, `Log`) VALUES ('$queryUserID','$name','$username','biblio',NULL,'',NULL,'$date $time')");
-  editMessage($queryUserID,$querymsid,"true","<b>Ok ora puoi cercare nel Catalogo di ateneo</b>");
-};
-break;
+  $search = mysql_query("SELECT * FROM `Utenti` WHERE `ChatID` LIKE '$queryUserID'");
+  $Row = mysql_fetch_assoc($search);
+  $id = $Row["ChatID"];
+  $state = $Row["State"];
+  if(isset($id)){
+    mysql_query("UPDATE `Utenti` SET `State`='biblio',`Log`='$date $time' WHERE `ChatID` LIKE '$queryUserID'");
+    editMessage($queryUserID,$querymsid,"true","<b>Ok ora puoi cercare nel Catalogo di ateneo</b>");
+  }else{
+    mysql_query("INSERT INTO `Utenti`(`ChatID`, `Name`, `Username`, `State`, `Corso`, `Materia`, `Log`) VALUES ('$queryUserID','$name','$username','biblio',NULL,NULL,'$date $time')");
+    editMessage($queryUserID,$querymsid,"true","<b>Ok ora puoi cercare nel Catalogo di ateneo</b>");
+  };
+  break;
 };
 
 
@@ -204,40 +279,50 @@ if($querydata == "menumensa"){
       if($day !== "sab" && $day !== "dom"){
         if($time >= "00:01" && $time <= "10:00"){
           editMessage($queryUserID,$querymsid,"true","Torna più tardi, aggiorno questa funzione alle 10:00");
-        }else if($time >= "10:00" && $time <= "15:00"){
-          editMessage($queryUserID,$querymsid,"true","<b>Ok, ti invio il menu della mensa di oggi, attendi...</b>");
-          $xml = simplexml_load_file('http://ammensa-unisa.appspot.com');
-          $menuUrl = $xml->menu->menuUrl;
-          sendDocument($queryUserID,"$menuUrl");
-        }else{
-          editMessage($queryUserID,$querymsid,"true","<b>Sono le $time, torna domani per il nuovo menu</b>");
-        }}else{
-          editMessage($queryUserID,$querymsid,"true","<b>Il menu della mensa non verrà pubblicato oggi</b>");
-        }}else{
-          editMessage($queryUserID,$querymsid,"true","<b>Il menu della mensa non verrà pubblicato oggi perchè festivo</b>");
+        }else if($time >= "10:00" && $time <= "21:00"){
+          editMessage($queryUserID,$querymsid,"true","<b>Ok, provo a recuperare il menu della mensa di oggi, attendi...</b>");
+          $adisu = "https://www.adisurcampania.it/archivio2_aree-tematiche_0_8.html.$timestamp";
+          $handle = curl_init($adisu);
+          curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
+          $response = curl_exec($handle);
+          $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+          if($httpCode == 404 || $httpCode == 500 ) {
+            editMessage($queryUserID,$querymsid,"true","<b>Sembra che il sito Adisu non sia raggiungibile :(</b>");
+            curl_close($handle);
+          }else{
+            try {
+              curl_close($handle);
+              $html = new DOMDocument();
+              $html->loadHtml($response);
+              $xpath = new DomXPath($html);
+              $nodeList_1 = $xpath->query('//*[@id="ist_2_8"]/div/div[2]/p[84]/a');
+              $nodeList_2 = $xpath->query('//*[@id="ist_2_8"]/div/div[2]/p[85]/a');
+              $nodeList_3 = $xpath->query('//*[@id="ist_2_8"]/div/div[2]/p[86]/a');
+              foreach($nodeList_1 as $node_1) {
+                $menuUrl[] = $node_1->getAttribute('href');
+              }
+              foreach($nodeList_2 as $node_2) {
+                $menuUrl[] = $node_2->getAttribute('href');
+              }
+              foreach($nodeList_3 as $node_3) {
+                $menuUrl[] = $node_3->getAttribute('href');
+              }
+              editMessage($queryUserID,$querymsid,"true","<b>Ok, ci sono menu in arrivo...</b>");
+              sendDocument($queryUserID,$menuUrl[0]);
+              sendDocument($queryUserID,$menuUrl[1]);
+              sendDocument($queryUserID,$menuUrl[2]);
+            } catch (\Exception $e) {
+              editMessage($queryUserID,$querymsid,"true","<b>Niente da fare, non sono riuscito a recuperare il menu :(</b>");
+            }}
+          }else{
+            editMessage($queryUserID,$querymsid,"true","<b>Sono le $time, torna domani per il nuovo menu</b>");
+          }}else{
+            editMessage($queryUserID,$querymsid,"true","<b>Il menu della mensa non verrà pubblicato oggi</b>");
+          }}else{
+            editMessage($queryUserID,$querymsid,"true","<b>Il menu della mensa non verrà pubblicato oggi perchè festivo</b>");
+          };
+          break;
         };
-break;
-};
-
-
-
-// Active Users
-if($querydata == "activeusers"){
-mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='$date $time' WHERE `ChatID` LIKE '$queryUserID'");
-$users = mysql_query("SELECT * FROM `Utenti` WHERE `ChatID` ");
-$count = mysql_num_rows($users);
-editMessage($queryUserID,$querymsid,"true","<b>Utenti attivi: </b> $count");
-break;
-};
-
-
-
-// Send Feedback
-if($querydata == "sendfeedback"){
-mysql_query("UPDATE `Utenti` SET `State`='feedback',`Log`='$date $time' WHERE `ChatID` LIKE '$queryUserID'");
-editMessage($queryUserID,$querymsid,"true","<b>Modulo Feedback</b>\n\n<i>Riporta un problema o suggerisci una funzione</i>");
-break;
-};
 
 
 
@@ -251,41 +336,20 @@ switch ($text){
 // Start
 case '/start':
 sendMessage($chatID,"true","Ciao <b>$name!</b>\nBenvenuto su <b>IngUnisaBot</b>.\n\nPer utilizzare alcune funzioni devi impostare un tuo profilo.\nPer farlo utilizza il comando /config.\nSe non sei interessato ignora questo step o configuralo più tardi.\n\nDigita /comandi per visualizzare i comandi del bot o seleziona una funzione dal menu");
-mysql_query("INSERT INTO `Utenti`(`ChatID`, `Name`, `Username`, `State`, `Corso`, `Cartella`, `Materia`, `Log`) VALUES ('$chatID','$name','$username','0',NULL,'',NULL,'$date $time')");
+mysql_query("INSERT INTO `Utenti`(`ChatID`, `Name`, `Username`, `State`, `Corso`, `Materia`, `Log`) VALUES ('$chatID','$name','$username','0',NULL,NULL,'$date $time')");
 break;
 
 
 
 // Commands
 case '/comandi':
-sendMessage($chatID,"true","/start - avvia bot\n/config - configura il tuo profilo\n/profilo - informazioni del tuo profilo\n/orari - cerca gli orari delle lezioni\n/esami - trova le date dei prossimi appelli\n/studentingegneria - cerca su StudentIngegneria\n/r0x - cerca su r0x\n/cartellecondivise - cerco cartelle condivise\n/cercadocente - ricerca dei docenti\n/trovacompagno - cerca un compagno di studio\n/utility - funzioni utili\n/info - informazioni sul bot\n/canc - interrompe l'operazione corrente\n\n<b>Seleziona una funzione per iniziare</b>");
-break;
-
-
-
-// Modul Backend Feedback
-case 'code':
-mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
-sendMessage($chatID,"true","Sei nel backend feedback.");
-$search = mysql_query("SELECT * FROM `Feedback`");
-while($Row = mysql_fetch_assoc($search))
-{
-  $feedback = $Row["Feedback"];
-  $feedbacks[] = $feedback;
-};
-if(!empty($feedbacks)){
-$feedbacks = implode("\n\n", $feedbacks);
-sendMessage($chatID,"true", "$feedbacks");
-sendMessage($chatID,"true","Ricerca Feedback Completata");
-}else{
-  sendMessage($chatID,"true","Non ci sono feedback");
-}
+sendMessage($chatID,"true","/start - avvia bot\n/config - configura il tuo profilo\n/profilo - informazioni del tuo profilo\n/orari - cerca gli orari delle lezioni\n/esami - trova le date dei prossimi appelli\n/cercadocente - ricerca dei docenti\n/trovacompagno - cerca un compagno di studio\n/utility - funzioni utili\n/info - informazioni sul bot\n/canc - interrompe l'operazione corrente\n\n<b>Seleziona una funzione per iniziare</b>");
 break;
 
 
 
 // Modul Backend Message
-case 'code':
+case '/code':
 mysql_query("UPDATE `Utenti` SET `State`='code',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
 sendMessage($chatID,"true","Sei nel backend messaggi. Puoi mandare un messaggio a tutti i membri");
 break;
@@ -301,9 +365,10 @@ $state = $Row["State"];
 if(isset($id)){
   mysql_query("UPDATE `Utenti` SET `State`='config',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
 }else{
-  mysql_query("INSERT INTO `Utenti`(`ChatID`, `Name`, `Username`, `State`, `Corso`, `Cartella`, `Materia`, `Log`) VALUES ('$chatID','$name','$username','config',NULL,'',NULL,'$date $time')");
+  mysql_query("INSERT INTO `Utenti`(`ChatID`, `Name`, `Username`, `State`, `Corso`, `Materia`, `Log`) VALUES ('$chatID','$name','$username','config',NULL,NULL,'$date $time')");
 };
-sendMessage($chatID,"true","Quando vuoi iniziamo",$start,'real');
+sendMessage($chatID,"true","<b>Qual è il tuo corso di studi?</b>",$corsi_menu,'inline');
+mysql_query("UPDATE `Utenti` SET `State`='config',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
 break;
 
 
@@ -311,7 +376,7 @@ break;
 // Info
 case '/info':
 mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
-sendMessage($chatID,"true","Per info, termini e condizioni di utilizzo clicca qui",$info,'inline');
+sendMessage($chatID,"true","Qui trovi il repository per qualsiasi info o segnalazione",$info,'inline');
 break;
 
 
@@ -321,7 +386,6 @@ case '/profilo':
 $search = mysql_query("SELECT * FROM `Utenti` WHERE `ChatID` LIKE '$chatID'");
 $Row = mysql_fetch_assoc($search);
 $corso = $Row["Corso"];
-$cartella = $Row["Cartella"];
 $materia = $Row["Materia"];
 if($materia === NULL){
 }else{
@@ -332,7 +396,7 @@ if($materia === NULL){
     $nomemateria = "impossibile trovare materia";
   }};
   if(isset($corso)){
-    sendMessage($chatID,"true","<b>Corso di studi:</b> $corso\n<b>Cartella:</b> $cartella\n<b>Materia:</b> $nomemateria",$profile,'inline');
+    sendMessage($chatID,"true","<b>Corso di studi:</b> $corso\n<b>Materia:</b> $nomemateria",$profile,'inline');
   }else{
     sendMessage($chatID,"true","Non hai ancora impostato il tuo profilo o è incompleto");
   }
@@ -367,14 +431,7 @@ $id = $Row["ChatID"];
 $corso = $Row["Corso"];
 if(isset($id)){
   if(isset($corso)){
-    $search = mysql_query("SELECT * FROM `Corsi` WHERE `Corso` LIKE '$corso'");
-    $Row = mysql_fetch_assoc($search);
-    $link = $Row["Link"];
-    if($corso == "06229"){
-    $corso = "DH";
-    };
-    sendMessage($chatID,"true","<b>Ok, ti invio il file, attendi...</b>");
-    sendDocument($chatID,"https://easycourse.unisa.it/EasyCourse/Orario/Facolta_di_Ingegneria/2019-2020/449/Curricula/$link$corso.pdf?$timestamp");
+    sendMessage($chatID,"true","<b>Ok, seleziona una funzione</b>",$orarimenu,'inline');
   }else{
     sendMessage($chatID,"true","<b>Non hai ancora impostato il tuo profilo o è incompleto</b>");
   }}else{
@@ -422,19 +479,37 @@ if(isset($id)){
       $attivita_didattica = $attivita_didattica[1];
       $attivita_didattica = html_entity_decode($attivita_didattica);
       $periodo_iscrizioni = $row->find('td',1)->plaintext;
+      $periodo_iscrizioni = html_entity_decode($periodo_iscrizioni);
+      $intervallo_iscrizione = explode("-",$periodo_iscrizioni);
+      $fine_iscrizione = $intervallo_iscrizione[1];
+      $fine_iscrizione = str_replace("/","-",$fine_iscrizione);
+      $fine_iscrizione = strtotime($fine_iscrizione);
       $data_e_turno = $row->find('td',2)->plaintext;
+      $data_e_turno = html_entity_decode($data_e_turno);
+      $data_e_turno = str_replace(" ", "", $data_e_turno);
       $vuoto_1 = $row->find('td',3)->plaintext;
       $docente = $row->find('td',4)->plaintext;
       if(empty($docente)){
         $docente = "non assegnato";
       }
-      $vuoto_2 = $row->find('td',5)->plaintext;
-      $iscritti = $row->find('td',6)->plaintext;
+      $iscritti = $row->find('td',5)->plaintext;
+      if(!is_numeric($iscritti)){
+        $iscritti = $row->find('td',6)->plaintext;
+        if(!is_numeric($iscritti)){
+        $iscritti = $row->find('td',7)->plaintext;
+          if(!is_numeric($iscritti)){
+          $iscritti = $row->find('td',8)->plaintext;
+            if(!is_numeric($iscritti)){
+            $iscritti = $row->find('td',9)->plaintext;
+              if(!is_numeric($iscritti)){
+              $iscritti = $row->find('td',10)->plaintext;
+      }}}}}
       $val = similar_text($attivita_didattica, $nomemateria, $percent);
       if($percent > 95){
-        sendMessage($chatID,"true","Attività Didattiva: $attivita_didattica\nPeriodo Iscrizioni: $periodo_iscrizioni\nData e turno: $data_e_turno\nDocente: $docente\nIscritti: $iscritti");
+        if($day_1 <= $fine_iscrizione){
+        sendMessage($chatID,"true", "Attività Didattiva: $attivita_didattica\nPeriodo Iscrizioni: $periodo_iscrizioni\nData e turno: $data_e_turno\nDocente: $docente\nIscritti: $iscritti");
         $increment ++;
-      }};
+      }}};
       if($increment != '0'){
       }else{
         sendMessage($chatID,"true","Mi dispiace non ho trovato date d'esame per $nomemateria");
@@ -444,60 +519,6 @@ if(isset($id)){
     }}else{
       sendMessage($chatID,"true","Non hai ancora impostato il tuo profilo o è incompleto");
     };
-break;
-
-
-
-// R0X
-case '/r0x':
-$search = mysql_query("SELECT * FROM `Utenti` WHERE `ChatID` LIKE '$chatID'");
-$Row = mysql_fetch_assoc($search);
-$id = $Row["ChatID"];
-$state = $Row["State"];
-if(isset($id)){
-  mysql_query("UPDATE `Utenti` SET `State`='r0x',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
-  sendMessage($chatID,"true","<b>Ok, ora puoi cercare su r0x.it</b>");
-}else{
-  mysql_query("INSERT INTO `Utenti`(`ChatID`, `Name`, `Username`, `State`, `Corso`, `Cartella`, `Materia`, `Log`) VALUES ('$chatID','$name','$username','r0x',NULL,'',NULL,'$date $time')");
-  sendMessage($chatID,"true","<b>Ok, ora puoi cercare su r0x.it</b>");
-};
-break;
-
-
-
-// Sharing Folders
-case '/cartellecondivise':
-mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
-$search = mysql_query("SELECT * FROM `Utenti` WHERE `ChatID` LIKE '$chatID'");
-$Row = mysql_fetch_assoc($search);
-$id = $Row["ChatID"];
-$corso = $Row["Corso"];
-if(isset($id)){
-  if(isset($corso)){
-    $search=mysql_query("SELECT * FROM `Utenti` WHERE `ChatID` != $id AND `Corso` LIKE '$corso'");
-    while($Row = mysql_fetch_assoc($search)){
-      $cartella = $Row["Cartella"];
-      if(!empty($cartella)){
-        $cartelle[] = $cartella;
-      }};
-      if(isset($cartelle)){
-        $cartelle = implode("\n\n", $cartelle);
-        sendMessage($chatID,"true",$cartelle);
-      }else{
-        sendMessage($chatID,"true","Non ho trovato cartelle condivise per il tuo corso di studi");
-      }}else{
-        sendMessage($chatID,"true","Non hai ancora impostato il tuo profilo o è incompleto");
-      }}else{
-        sendMessage($chatID,"true","Non hai ancora impostato il tuo profilo o è incompleto");
-      };
-break;
-
-
-
-// StudentIngegneria
-case '/studentingegneria':
-mysql_query("UPDATE `Utenti` SET `State`='SI',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
-sendMessage($chatID,"true","<b>Ok, ora puoi cercare sul sito StudentIngengeria</b>");
 break;
 
 
@@ -526,7 +547,7 @@ if(!empty($username)){
           $search = mysql_query("SELECT * FROM `Esami` WHERE `Corso` LIKE '$corso' AND `Code` LIKE '$materia'");
           $Row = mysql_fetch_assoc($search);
           $nomemateria = $Row["Esame"];
-          sendMessage($chatID,"true","Ho trovato $fcount utenti che stanno studiando $nomemateria:\n\n$friends");
+          sendMessage($chatID,"true","Risultato della ricerca: $fcount\nEcco l'elenco di chi sta studiando $nomemateria:\n\n$friends");
         }else{
           $search = mysql_query("SELECT * FROM `Esami` WHERE `Corso` LIKE '$corso' AND `Code` LIKE '$materia'");
           $Row = mysql_fetch_assoc($search);
@@ -546,7 +567,7 @@ break;
 // Teacher Finder
 case '/cercadocente':
 mysql_query("UPDATE `Utenti` SET `State`='docente',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
-sendMessage($chatID,"true","<b>Ok, ora puoi cercare un docente</b>");
+sendMessage($chatID,"true","<b>Ok, scrivi Nome e Cognome del docente che vuoi cercare</b>");
 break;
 
 
@@ -561,7 +582,7 @@ if(isset($id)){
   mysql_query("UPDATE `Utenti` SET `State`='biblio',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
   sendMessage($chatID,"true","<b>Ok, ora puoi cercare nel Catalogo di ateneo</b>");
 }else{
-  mysql_query("INSERT INTO `Utenti`(`ChatID`, `Name`, `Username`, `State`, `Corso`, `Cartella`, `Materia`, `Log`) VALUES ('$chatID','$name','$username','biblio',NULL,'',NULL,'$date $time')");
+  mysql_query("INSERT INTO `Utenti`(`ChatID`, `Name`, `Username`, `State`, `Corso`, `Materia`, `Log`) VALUES ('$chatID','$name','$username','biblio',NULL,NULL,'$date $time')");
   sendMessage($chatID,"true","<b>Ok, ora puoi cercare nel Catalogo di ateneo</b>");
 };
 break;
@@ -594,82 +615,11 @@ $ingegneria = $Row["Ingegneria"];
 
 
 if(isset($id)){
-// State Config
-if($state == "config"){
-mysql_query("UPDATE `Utenti` SET `State`='config1',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
-sendMessage($chatID,"true","<b>Qual è il tuo corso di studi?</b>\n\nDigital health and bioinformatic engineering - Magistrale [06229]\nFood engineering - Magistrale [06228]\nIngegneria chimica - Magistrale [06222]\nIngegneria civile - Magistrale [06221]\nIngegneria elettronica - Magistrale [06224]\nIngegneria gestionale - Magistrale [06226]\nIngegneria informatica - Magistrale [06227]\nIngegneria meccanica - Magistrale [06223]\nIngegneria per l'ambiente e il territorio - Magistrale [06225]\nIngegneria chimica - triennale [06122]\nIngegneria civile - triennale [06121]\nIngegneria civile per l'ambiente e il territorio - triennale [06125]\nIngegneria elettronica - triennale [06124]\nIngegneria gestionale - triennale [06126]\nIngegneria informatica - triennale [06127]\nIngegneria meccanica - triennale [06123]\nIngegneria edile-architettura - quinquennale [06601]\n\n<i>Inserisci il codice corrispondente posto tra parentesi quadre</i>",$start,'hide');
-}
-
-
-
-// State Config 1
-else if($state == "config1"){
-  if($text == "06229"||$text == "06228"|| $text == "06222"||$text == "06221"||$text == "06224"||$text == "06226"||$text == "06227"||$text == "06223"||$text == "06225"||$text == "06122"||$text == "06121"||$text == "06125"||$text == "06124"||$text == "06126"||$text == "06127"||$text == "06123"||$text == "06601"){
-    mysql_query("UPDATE `Utenti` SET `State`='config2',`Corso`='$text',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
-    sendMessage($chatID,"true","Con G Suite gli studenti Unisa hanno spazio illimitato in cloud\n\nTi piacerebbe condividere una cartella con altri studenti del tuo corso?\n\nCon la funziona /cartellecondivise in seguito posso individuare tutte le cartelle di altri studenti che hanno fatto lo stesso\n\n<b>Scrivi qui il nome della cartella seguito dal TOKEN</b>\n\n<i>https://drive.google.com/drive/folders/TOKEN</i>\n\n<i>Esempio</i>\nInformatica, 1jq5wZm47zukLO0pGeswsJ1do2fb2dVzZ");
-    sendMessage($chatID,"true","Non ora?",$skipmenu,'inline');
-  }else{
-    sendMessage($chatID,"true","Non hai inserito un codice di corso valido\nPer favore reinseriscilo");
-  }}
-
-
-
-// State Config 2
-else if($state == "config2"){
-  $_text = explode(", ",$text);
-  $nome_cartella = $_text[0];
-  $nome_cartella = strtoupper($nome_cartella);
-  $google_token = $_text[1];
-  $_google_token = preg_replace('/[^A-Za-z0-9\-_]/', '', $google_token);
-  $url = "https://drive.google.com/drive/folders/$_google_token";
-  $url = str_replace(' ', '', $url);
-  $handle = curl_init($url);
-  curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
-  $response = curl_exec($handle);
-  $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-  if($httpCode == 404) {
-    sendMessage($chatID,"true","Non hai inserito un link valido");
-    curl_close($handle);
-  }else{
-    mysql_query("UPDATE `Utenti` SET `State`='0',`Cartella`='$nome_cartella, $url',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
-    sendMessage($chatID,"true","<b>Perfetto, abbiamo finito!</b>\n\nEcco il tuo /profilo");
-    curl_close($handle);
-  }
-  curl_close($handle);
-}
-
-
-
-// State R0X
-else if($state == "r0x"){
-  sendMessage($chatID,"true","<b>Ok, dammi un secondo</b>  &#128269;");
-  $i = 0;
-  $tot_pages = 25;
-  while ($i <= $tot_pages){
-    $_text = str_replace(' ', '%20', $text);
-    $url = "http://www.r0x.it/index.php?app=core&module=search&do=search&fromMainBar=1&search_term=$_text&st=$i";
-    $html = file_get_html("$url");
-    foreach($html->find('td>h4') as $risultato) {
-      $item['Titolo'] = $risultato->find('a', 0)->plaintext;
-      $item['Link'] = $risultato->find('a', 0)->href;
-      $ricerca[] = $item;
-    };
-    if(empty($ricerca)){
-      sendMessage($chatID,"true","Mi dispiace, non ho trovato risultati alla tua ricerca");
-      unset($ricerca);
-      break;
-    }else{
-      sendMessage($chatID,"true", str_replace(array('[',']','{','}','"',',','        '), '', json_encode($ricerca, JSON_PRETTY_PRINT | ENT_NOQUOTES | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_LINE_TERMINATORS | JSON_UNESCAPED_UNICODE)));
-      $i = $i+25;
-      unset($ricerca);
-    }};
-    sendMessage($chatID,"true","<b>Ricerca completata!</b>");
-  }
 
 
 
 // State Teacher
-else if($state == 'docente'){
+  if($state == 'docente'){
   $increment = 0;
   $_text = explode(" ",$text);
   $nome = $_text[0];
@@ -708,29 +658,6 @@ else if($state == 'docente'){
 
 
 
-// State StudentIngegneria
-else if($state == 'SI'){
-  sendMessage($chatID,"true","<b>Ok, dammi un secondo</b>  &#128269;");
-  $_text = str_replace(' ', '%20', $text);
-  $html = file_get_html("http://www.studentingegneria.it/?s=$_text");
-  foreach($html->find('h2') as $risultato) {
-    $item['Titolo'] = $risultato->find('a', 0)->plaintext;
-    $item['Link'] = $risultato->find('a', 0)->href;
-    $ricerca[] = $item;
-  };
-  if(empty($ricerca)){
-    sendMessage($chatID,"true","<b>Mi dispiace, non ho trovato risultati alla tua ricerca</b>");
-    unset($ricerca);
-    break;
-  }else{
-    sendMessage($chatID,"true", str_replace(array('[',']','{','}','"',',','        '), '', json_encode($ricerca, JSON_PRETTY_PRINT | ENT_NOQUOTES | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_LINE_TERMINATORS | JSON_UNESCAPED_UNICODE)));
-    unset($ricerca);
-  }
-  sendMessage($chatID,"true","<b>Ricerca completata!</b>");
-}
-
-
-
 // State Backend Message
 else if($state == "code"){
   $search = mysql_query("SELECT * FROM `Utenti` WHERE `ChatID`");
@@ -746,116 +673,43 @@ else if($state == "code"){
 
 
 
-// State Mod Folder
-else if($state == "modfolder"){
-  $_text = explode(", ",$text);
-  $nome_cartella = $_text[0];
-  $nome_cartella = strtoupper($nome_cartella);
-  $google_token = $_text[1];
-  $_google_token = preg_replace('/[^A-Za-z0-9\-_]/', '', $google_token);
-  $url = "https://drive.google.com/drive/folders/$_google_token";
-  $url = str_replace(' ', '', $url);
-  $handle = curl_init($url);
-  curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
-  $response = curl_exec($handle);
-  $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-  if($httpCode == 404) {
-    sendMessage($chatID,"true","Non hai inserito un token valido");
-    curl_close($handle);
-  }else{
-    mysql_query("UPDATE `Utenti` SET `State`='0',`Cartella`='$nome_cartella, $url',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
-    sendMessage($chatID,"true","<b>Perfetto, abbiamo finito!</b>\n\nEcco il tuo /profilo");
-    curl_close($handle);
-  }
-  curl_close($handle);
-}
-
-
-
-// State Feedback
-else if($state == 'feedback'){
-  mysql_query("INSERT INTO `Feedback`(`Feedback`, `Captcha`, `Status`, `Log`) VALUES ('$text','0','-1','$date $time')");
-  $characters = '0123456789';
-  $randomString = '';
-  $lunghezza = 5;
-  for ($i = 0; $i < $lunghezza; $i++) {
-    $index = rand(0, strlen($characters) - 1);
-    $randomString .= $characters[$index];
-  }
-  mysql_query("UPDATE `Utenti` SET `State`='fbv',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
-  mysql_query("UPDATE `Feedback` SET `Captcha`='$randomString'  WHERE `Feedback` LIKE '$text'");
-  sendMessage($chatID,"true","Per confermare l'invio del messaggio scrivi il seguente captcha altrimenti eliminalo:\n\n$randomString",$eliminafeeback,'inline');
-}
-
-
-
-// State Feedback Verify
-else if($state == "fbv"){
-  $search = mysql_query("SELECT * FROM `Feedback` WHERE `Captcha` LIKE '$text'");
-  $Row = mysql_fetch_assoc($search);
-  $captcha = $Row["Captcha"];
-  if($text == "$captcha"){
-    mysql_query("UPDATE `Feedback` SET `Status`='1'  WHERE `Captcha` LIKE '$text'");
-    unset($randomString);
-    mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
-    sendMessage($chatID,"true","<b>Messaggio inviato correttamente!</b>");
-  }else{
-    mysql_query("DELETE FROM `Feedback` WHERE `Status`= -1 ");
-    unset($randomString);
-    mysql_query("UPDATE `Utenti` SET `State`='0',`Log`='$date $time' WHERE `ChatID` LIKE '$chatID'");
-    sendMessage($chatID,"true","Errore nella sintassi del captcha. Il messaggio è stato eliminato");
-  }}
-
-
-
 // State Biblio
 else if($state == 'biblio'){
   sendMessage($chatID,"true","<b>Ok, dammi un secondo</b>  &#128269;");
   $_text = str_replace(' ', '%20', $text);
-  $html = file_get_html("http://ariel.unisa.it/primo_library/libweb/action/search.do?fn=search&ct=search&initialSearch=true&mode=Basic&tab=local&indx=1&dum=true&srt=rank&vid=39USA_V1&frbg=&vl%28freeText0%29=$_text&scp.scps=scope%3A%2839USA_ALMA%29%2Cscope%3A%2839USA_ALMA_MARC%29");
-  foreach($html->find('span[class=EXLAvailabilityLibraryName]') as $library) {
-    $library->plaintext;
-    $libreria->outertext = $library;
+  $_url = "https://catalogo.share-cat.unina.it/sharecat/search?&s=50&o=score&h=adv&q=any_bc:$_text&f=library:%22UNISA%22&&dls=true&v=l";
+  $curl = curl_init();
+  curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+  curl_setopt($curl, CURLOPT_HEADER, false);
+  curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+  curl_setopt($curl, CURLOPT_URL, $_url);
+  curl_setopt($curl, CURLOPT_REFERER, $_url);
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+  $str = curl_exec($curl);
+  curl_close($curl);
+  $html = new simple_html_dom();
+  $html->load($str);
+  foreach($html->find('div[class="item clear"]>table>tbody>tr>td>span>a[title="Visualizza persona"]') as $_icon) {
+    $_icon->outertext = '';
   };
   $html->load($html->save());
-  foreach($html->find('span[class=EXLAvailabilityCollectionName]') as $area) {
-    $area->plaintext;
-    $zona->outertext = $area;
+  foreach($html->find('div[class="item clear"]') as $risultato) {
+    $item['<i>Titolo</i>'] = $risultato->find('span>a', 0)->plaintext;
+    $item['<i>Link</i>'] = $risultato->find('td[class="alignLeft"]>a', 0)->href;
+    $ricerca_biblio[] = $item;
   };
-  $html->load($html->save());
-  foreach($html->find('span[class=EXLAvailabilityCallNumber]') as $callnumber) {
-    $callnumber->outertext = '';
+  $html->clear();
+  unset($html);
+  if(empty($ricerca_biblio)){
+    sendMessage($chatID,"true","Mi dispiace, non ho trovato risultati alla tua ricerca");
+    unset($ricerca_biblio);
+    break;
+  }else{
+    sendMessage($chatID,"true", str_replace(array('[',']','{','}','"',"    ,","        "), '', json_encode($ricerca_biblio, JSON_PRETTY_PRINT | ENT_NOQUOTES | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_LINE_TERMINATORS | JSON_UNESCAPED_UNICODE)));
+    unset($ricerca_biblio);
   };
-  $html->load($html->save());
-  foreach($html->find('td[class=EXLSummary]') as $risultato) {
-    $item['<i>Titolo</i>'] = $risultato->find('h2[class=EXLResultTitle]', 0)->plaintext;
-    $item['<i>Autore</i>'] = $risultato->find('h3[class=EXLResultAuthor]', 0)->plaintext;
-    $item['<i>Edizione</i>'] = $risultato->find('h3[class=EXLResultFourthLine]', 0)->plaintext;
-    $item['<i>Stato</i>'] = $risultato->find('em[class=EXLResultStatusAvailable]', 0)->plaintext;
-    $ricerca[] = $item;
-  };
-  sendMessage($chatID,"true", str_replace(array('[',']','{','}','"',',','        ','      ','null','()','&nbsp;','\t'), '', json_encode($ricerca, JSON_PRETTY_PRINT | ENT_NOQUOTES | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_LINE_TERMINATORS | JSON_UNESCAPED_UNICODE)));
-  unset($ricerca);
   sendMessage($chatID,"true","<b>Ricerca completata!</b>");
 }
-
-
-
-// State Rooms
-else if($state == 'aulario'){
-  $search = mysql_query("SELECT * FROM `TrovaAule` WHERE `Aula` LIKE '$text'");
-  $Row = mysql_fetch_assoc($search);
-  $aula = $Row["Aula"];
-  $lat = $Row["Lat"];
-  $lon = $Row["Lon"];
-  $piano = $Row["Piano"];
-  $edificio = $Row["Edificio"];
-  if(isset($aula)){
-    sendMessage($chatID,"true","L'aula: $aula si trova al piano $piano nell'edificio $edificio");
-    sendLocation($chatID,$lat,$lon);
-  }else{
-    sendMessage($chatID,"true","Mi dispiace, non sono riuscito a trovare l'aula: $text");
-  }}
 
 
 
@@ -903,4 +757,3 @@ break;
 
 
 ?>
-
