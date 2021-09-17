@@ -1,28 +1,20 @@
-# Ingegneria Unisa Bot
-[Bot Telegram](https://telegram.me/ingunisabot) per gli studenti iscritti alla facoltà di Ingegneria dell'Università di Salerno 
+![version-php](https://img.shields.io/badge/php-%3D5.6-blue)
+![version-mysql](https://img.shields.io/badge/mysql-%3D8.0-orange)
+![status-website](https://img.shields.io/badge/website-up-brightgreen)
+[![dependencies](https://img.shields.io/badge/dependencies-simplehtmldom-red)](https://simplehtmldom.sourceforge.io/)
+![made-for](https://img.shields.io/badge/made%20for-telegram-blue)
+![mit-license](https://img.shields.io/badge/license-MIT-green)
 
-## Librerie utilizzate
-- [PHP Simple HTML DOM Parser](https://simplehtmldom.sourceforge.io)
+# Ingegneria Unisa Bot
+Bot Telegram per gli studenti iscritti alla facoltà di Ingegneria dell'Università di Salerno 
 
 ## Indice Funzioni
-- Inviare gli orari delle lezioni
-- [Trovare le date dei prossimi appelli](#trovare-le-date-dei-prossimi-appelli)
-- Cercare su StudentIngegneria
-- Cercare su r0x
-- Condividere cartelle GSuite
-- Cercare un docente
-- Localizzare aule
-- Trovare compagno di studio
-- [Cercare libri nel catalogo di ateneo](#cercare-libri-nel-catalogo-di-ateneo)
-- Inviare il menu della mensa
-- [Visionare le webcam Unisa](#visionare-le-webcam-unisa)
+- [x] Inviare gli orari delle lezioni
+- [x] Trovare le date dei prossimi appelli
+- [x] Cercare un docente
+- [x] Localizzare aule libere
+- [x] Trovare compagno di studio
+- [x] Cercare libri nel catalogo di ateneo
+- [x] Inviare il menu della mensa
+- [x] Visionare le webcam Unisa
 
-## Come funziona
-### Trovare le date dei prossimi appelli
-<a><img src="https://raw.githubusercontent.com/gistru/ing-unisa-bot/master/doc/esami.gif"></a>
-
-### Cercare libri nel catalogo di ateneo
-<a><img src="https://raw.githubusercontent.com/gistru/ing-unisa-bot/master/doc/biblio.gif"></a>
-
-### Visionare le webcam Unisa
-<a><img src="https://raw.githubusercontent.com/gstru/ing-unisa-bot/master/doc/webcam.gif"></a>
