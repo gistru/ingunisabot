@@ -11,12 +11,8 @@ Quando utilizzi il bot IngUnisaBot tramite Telegram, vengono raccolte delle info
 - Username - il tuo username
 - State - comando richiesto dall'utente
 - Corso - corso di laurea (facoltativo)
-- Cartella - cartella gsuite condivisa (facoltativo)
 - Materia - materia di studio (facoltativo)
 - Log - data e ora di accesso al bot
-
-## Modulo Feedback
-Quando invii un suggerimento tramite il modulo feedback, questo è totalmente anonimo. Vengono infatti memorizzati solo ed esclusivamente il messaggio di testo insieme alla data di invio. Non è possibile ricondurre il messaggio ad alcun utente in particolare.
 
 ## Cosa non viene raccolto
 In alcun modo è possibile tramite le API di Telegram risalire al tuo numero di telefono oppure alla tua posizione. Non viene raccolto inoltre alcun indirizzo IP, nessuna E-MAIL e nessuna PASSWORD.
@@ -26,9 +22,6 @@ I tuoi dati verranno utilizzati solo per erogare il servizio e svolgere le funzi
 
 ## Sistema di matching
 Il bot elabora i dati in suo possesso per creare delle associazioni Corso-Materia. Non vengono fatte distinzioni di sesso o di anno. In questo modo è possibile intercettare nell'immediato un possibile compagno di studio. Nel momento in cui si condivide la propria materia di studio l'utente dichiara di essere consapevole all'invio del proprio username e di poter essere contattato da altri utenti. L'utilizzo dell'username è anche un modo per celare la tua identità quando comunichi con una nuova persona. Tuttavia questo non ti assicura un completo anonimato sopratutto se ad esempio dichiari il tuo cognome nelle impostazioni dell'app o se banalmente scegli un username riconducibile a te.
-
-## Menu Mensa
-Il menu della mensa viene prelevato sfruttando il servizio [ammensa-unisa](http://ammensa-unisa.appspot.com).
 
 ## Cancellare i propri dati
 Puoi cancellare il tuo profilo in qualsiasi momento. Accedi alle tue informazioni tramite il comando /profilo e seleziona la voce "Cancella profilo". Ogni informazione collegata al tuo ID sarà cancellata dal database.
