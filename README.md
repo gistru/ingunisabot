@@ -17,4 +17,5 @@ Bot Telegram per gli studenti iscritti alla facoltà di Ingegneria dell'Universi
 - [x] Cercare libri nel catalogo di ateneo
 - [x] Inviare il menu della mensa
 - [x] Visionare le webcam Unisa
+- [x] Generare link google search sui domini delle università italiane
 
