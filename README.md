@@ -1,6 +1,5 @@
 ![version-php](https://img.shields.io/badge/php-%3D5.6-blue)
 ![version-mysql](https://img.shields.io/badge/mysql-%3D8.0-orange)
-![status-website](https://img.shields.io/badge/website-up-brightgreen)
 [![dependencies](https://img.shields.io/badge/dependencies-simplehtmldom-red)](https://simplehtmldom.sourceforge.io/)
 ![made-for](https://img.shields.io/badge/made%20for-telegram-blue)
 ![mit-license](https://img.shields.io/badge/license-MIT-green)
